@@ -20,9 +20,11 @@ import {
   Plus,
   ChevronRight,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SignalStudioDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const navigate = useNavigate();
 
   // Mock data for KPI tiles
   const kpiData = [
@@ -140,10 +142,10 @@ const SignalStudioDashboard = () => {
                 Signal Studio Dashboard
               </h1>
 
-              <button className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              {/* <button className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <Plus className="w-4 h-4 mr-2" />
                 New Draft
-              </button>
+              </button> */}
             </div>
             {/* KPI Tiles */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -202,7 +204,13 @@ const SignalStudioDashboard = () => {
                     Start a new content draft
                   </p>
                 </div>
-                <ChevronRight className="ml-auto text-gray-400" size={20} />
+                <ChevronRight
+                  className="ml-auto text-gray-400"
+                  size={20}
+                  onClick={() => {
+                    navigate("/dashboard/studio/editor");
+                  }}
+                />
               </button>
 
               <button className="bg-white border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-50">
@@ -217,7 +225,13 @@ const SignalStudioDashboard = () => {
                     Create brand-aligned images
                   </p>
                 </div>
-                <ChevronRight className="ml-auto text-gray-400" size={20} />
+                <ChevronRight
+                  className="ml-auto text-gray-400"
+                  size={20}
+                  onClick={() => {
+                    navigate("/dashboard/studio/visualasseststudio");
+                  }}
+                />
               </button>
 
               <button className="bg-white border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-50">

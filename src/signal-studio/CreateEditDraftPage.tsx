@@ -9,6 +9,7 @@ import {
   BookOpen,
   BarChart2,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CreateEditDraftPage = () => {
   const [draftTitle, setDraftTitle] = useState("");
@@ -23,6 +24,7 @@ const CreateEditDraftPage = () => {
   const [showMemoryDrawer, setShowMemoryDrawer] = useState(false);
   const [showVersionHistory, setShowVersionHistory] = useState(false);
   const [versions, setVersions] = useState([]);
+  const navigate = useNavigate();
 
   // Mock brand guidelines data
   useEffect(() => {
@@ -92,6 +94,7 @@ const CreateEditDraftPage = () => {
   const handleSaveDraft = () => {
     // In a real implementation, this would save to backend
     alert("Draft saved successfully!");
+    navigate("/dashboard/studio/listview")
   };
 
   return (

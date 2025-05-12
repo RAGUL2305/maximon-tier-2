@@ -11,6 +11,7 @@ import {
   Download,
   Edit,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const DraftListView = () => {
   // Simulated draft data
@@ -20,6 +21,7 @@ const DraftListView = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedDrafts, setSelectedDrafts] = useState([]);
+  const navigate = useNavigate();
 
   // Sort states
   const [sortField, setSortField] = useState("lastUpdated");
@@ -184,7 +186,11 @@ const DraftListView = () => {
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Drafts</h1>
-          <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+          <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+          onClick={() => {
+            navigate("/dashboard/studio/editor");
+          }}
+          >
             + New Draft
           </button>
         </div>

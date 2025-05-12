@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Search,
-  Filter,
   ChevronDown,
   ChevronUp,
   RefreshCw,
@@ -13,7 +12,7 @@ import {
 
 const APIErrorLog = () => {
   // Mock data for API errors
-  const [errors, setErrors] = useState([
+  const [errors] = useState([
     {
       id: "err-001",
       timestamp: "2025-05-10T08:23:45Z",
@@ -64,7 +63,6 @@ const APIErrorLog = () => {
   // State for filters
   const [search, setSearch] = useState("");
   const [filterCode, setFilterCode] = useState("");
-  const [dateRange, setDateRange] = useState({ from: "", to: "" });
   const [sortBy, setSortBy] = useState("timestamp");
   const [sortOrder, setSortOrder] = useState("desc");
   const [selectedError, setSelectedError] = useState(null);
@@ -87,29 +85,31 @@ const APIErrorLog = () => {
     return searchMatch && codeMatch && dateMatch;
   });
 
-  // Sort errors
   const sortedErrors = [...filteredErrors].sort((a, b) => {
     if (sortBy === "timestamp") {
       return sortOrder === "asc"
-        ? new Date(a.timestamp) - new Date(b.timestamp)
-        : new Date(b.timestamp) - new Date(a.timestamp);
+        ? new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+        : new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
     } else if (sortBy === "severity") {
-      const severityOrder = { high: 3, medium: 2, low: 1 };
+      const severityOrder: Record<string, number> = {
+        high: 3,
+        medium: 2,
+        low: 1,
+      };
       return sortOrder === "asc"
         ? severityOrder[a.severity] - severityOrder[b.severity]
         : severityOrder[b.severity] - severityOrder[a.severity];
     }
     return 0;
   });
-
   // Format timestamp
-  const formatTimestamp = (timestamp) => {
+  const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
     return date.toLocaleString();
   };
 
   // Toggle sort order
-  const toggleSort = (field) => {
+  const toggleSort = (field: string) => {
     if (sortBy === field) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -119,7 +119,7 @@ const APIErrorLog = () => {
   };
 
   // Get severity color
-  const getSeverityColor = (severity) => {
+  const getSeverityColor = (severity: string) => {
     switch (severity) {
       case "high":
         return "bg-red-100 text-red-800";

@@ -31,17 +31,21 @@ import { Outlet, useNavigate } from "react-router-dom";
 import NotificationsPanel from "./admin-tools/NotificationPannel";
 
 const sidebarItems = [
-  { icon: <FileText size={20} />, label: "Studio" },
-  { icon: <Brain size={20} />, label: "Loom" },
-  { icon: <GitBranch size={20} />, label: "Flow" },
-  { icon: <LineChart size={20} />, label: "Core" },
-  { icon: <Radio size={20} />, label: "Scope" },
-  { icon: <Code size={20} />, label: "SDK" },
+  {
+    icon: <Home size={20} />,
+    label: "Dashboard",
+    path: "/dashboard",
+  },
+  { icon: <FileText size={20} />, label: "Studio", path: "/studio/launcher" },
+  { icon: <Brain size={20} />, label: "Loom", path: "/memoryloomdashboard" },
+  { icon: <GitBranch size={20} />, label: "Flow", path: "/signalflow" },
+  { icon: <LineChart size={20} />, label: "Core", path: "/core/signal-core" },
+  { icon: <Radio size={20} />, label: "Scope", path: "/scope/signal-scope" },
+  { icon: <Code size={20} />, label: "SDK", path: "/sdk/apidocs" },
 ];
 
 const subMenus: Record<string, { title: string; path: string }[]> = {
   Studio: [
-    { title: "Launcher", path: "/studio/launcher" },
     { title: "Edit Draft Page", path: "/studio/editor" },
     { title: "Visual Assest Studio", path: "/studio/visualasseststudio" },
     { title: "Propmt", path: "/studio/prompt" },
@@ -74,7 +78,6 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "Trigger Configurator", path: "/triggerconfigurator" },
   ],
   Core: [
-    { title: "SignalCore", path: "/core/signal-core" },
     {
       title: "DecisionEngineDashboard",
       path: "/core/decision-engine-dashboard",
@@ -90,7 +93,6 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "SimulationStudio", path: "/core/simulation-studio" },
   ],
   Scope: [
-    { title: "SignalScope", path: "/scope/signal-scope" },
     { title: "DriftInsightDashboard", path: "/scope/drift-insight-dashboard" },
     {
       title: "EntityRecognitionConfig",
@@ -103,7 +105,6 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "SignalScoringEngine", path: "/scope/signal-scoring-engine" },
   ],
   SDK: [
-    { title: "Api Docs Viewer", path: "/sdk/apidocs" },
     { title: "Api Error Log", path: "/sdk/apierror" },
     { title: "Api Tokens Page", path: "/sdk/apitokens" },
     { title: "Cli Access Config", path: "/sdk/cliaccess" },
@@ -663,33 +664,17 @@ const PlatformDashboard = () => {
 
         <nav className="mt-8 flex-1">
           <ul>
-            <li>
-              <button
-                onClick={() => {
-                  setActiveItem("Dashboard");
-                  navigate("/dashboard");
-                }}
-                className={`flex items-center w-full px-4 py-3 text-left ${
-                  activeItem === "Dashboard"
-                    ? "bg-gray-700"
-                    : "hover:bg-gray-700"
-                }`}
-              >
-                <span className="text-gray-300">{<Home size={20} />}</span>
-                <span className="hidden md:block ml-3 text-gray-200">
-                  Dashboard
-                </span>
-                {activeItem === "Dashboard" && (
-                  <span className="hidden md:block ml-auto h-2 w-2 rounded-full bg-blue-500"></span>
-                )}
-              </button>
-            </li>
             {sidebarItems.map((item, index) => (
               <li key={index}>
                 <button
                   onClick={() => {
                     setActiveItem((prev) =>
                       prev === item.label ? null : item.label
+                    );
+                    navigate(
+                      item.label === "Dashboard"
+                        ? `${item.path}`
+                        : `/dashboard${item.path}`
                     );
                   }}
                   className={`flex items-center w-full px-4 py-3 text-left ${

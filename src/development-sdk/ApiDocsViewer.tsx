@@ -1,8 +1,27 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
+type ApiSection = {
+  title: string;
+  content: string[];
+};
+
+type ApiEndpoint = {
+  title: string;
+  description: string;
+  method?: string;
+  endpoint?: string;
+  request?: string;
+  response?: string;
+  sections?: ApiSection[];
+};
+
+type ApiEndpointsMap = {
+  [moduleId: string]: ApiEndpoint[];
+};
 
 const ApiDocumentationViewer = () => {
   const [activeModule, setActiveModule] = useState("overview");
-  const [expandedSection, setExpandedSection] = useState(null);
+  const [expandedSection, setExpandedSection] = useState<number | null>(null);
 
   const modules = [
     { id: "overview", name: "Overview" },
@@ -14,7 +33,7 @@ const ApiDocumentationViewer = () => {
     { id: "sdk", name: "Developer SDK" },
   ];
 
-  const apiEndpoints = {
+  const apiEndpoints: ApiEndpointsMap = {
     overview: [
       {
         title: "Marketing OS Overview",
@@ -418,12 +437,12 @@ const ApiDocumentationViewer = () => {
     ],
   };
 
-  const handleModuleChange = (moduleId) => {
+  const handleModuleChange = (moduleId: string) => {
     setActiveModule(moduleId);
     setExpandedSection(null);
   };
 
-  const toggleSection = (index) => {
+  const toggleSection = (index: number) => {
     if (expandedSection === index) {
       setExpandedSection(null);
     } else {
@@ -464,7 +483,7 @@ const ApiDocumentationViewer = () => {
         {/* Main content */}
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-4xl mx-auto">
-            {currentEndpoints.map((endpoint, index) => (
+            {currentEndpoints.map((endpoint, index: number) => (
               <div
                 key={index}
                 className="mb-8 bg-white rounded-lg shadow-md overflow-hidden"
@@ -557,21 +576,20 @@ const ApiDocumentationViewer = () => {
                       </div>
                     )}
 
-                    {endpoint.sections &&
-                      endpoint.sections.map((section, sIdx) => (
-                        <div key={sIdx} className="mt-6">
-                          <h3 className="font-medium text-gray-900 mb-2">
-                            {section.title}
-                          </h3>
-                          <ul className="list-disc pl-5 space-y-1">
-                            {section.content.map((item, iIdx) => (
-                              <li key={iIdx} className="text-gray-700">
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
+                    {endpoint.sections?.map((section, sIdx: number) => (
+                      <div key={sIdx} className="mt-6">
+                        <h3 className="font-medium text-gray-900 mb-2">
+                          {section.title}
+                        </h3>
+                        <ul className="list-disc pl-5 space-y-1">
+                          {section.content.map((item, iIdx: number) => (
+                            <li key={iIdx} className="text-gray-700">
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>

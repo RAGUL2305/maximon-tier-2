@@ -1,15 +1,23 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   AlertCircle,
   Copy,
   Plus,
   Trash2,
   CheckCircle,
-  Clock,
   XCircle,
 } from "lucide-react";
 
-const API_TOKENS_MOCK = [
+type ApiToken = {
+  id: string;
+  name: string;
+  created: string; // ISO date string
+  expires: string; // ISO date string
+  status: "active" | "expired"; // enum-like string literal union
+  token: string;
+};
+
+const API_TOKENS_MOCK: ApiToken[] = [
   {
     id: "1",
     name: "Production API",
@@ -37,13 +45,13 @@ const API_TOKENS_MOCK = [
 ];
 
 const APITokensPage = () => {
-  const [tokens, setTokens] = useState([]);
+  const [tokens, setTokens] = useState<ApiToken[]>([]);
   const [showNewTokenModal, setShowNewTokenModal] = useState(false);
   const [showRevokeModal, setShowRevokeModal] = useState(false);
-  const [selectedToken, setSelectedToken] = useState(null);
+  const [selectedToken, setSelectedToken] = useState<ApiToken | null>(null);
   const [newTokenName, setNewTokenName] = useState("");
   const [newTokenExpiry, setNewTokenExpiry] = useState("30");
-  const [newToken, setNewToken] = useState(null);
+  const [newToken, setNewToken] = useState<ApiToken | null>(null);
   const [copiedToken, setCopiedToken] = useState(false);
   const [tokenCount, setTokenCount] = useState(0);
 
@@ -55,7 +63,7 @@ const APITokensPage = () => {
     );
   }, []);
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -64,7 +72,7 @@ const APITokensPage = () => {
     });
   };
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (status: string) => {
     if (status === "active") {
       return (
         <span className="flex items-center px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
@@ -116,13 +124,13 @@ const APITokensPage = () => {
     setNewTokenExpiry("30");
   };
 
-  const handleCopyToken = (token) => {
+  const handleCopyToken = (token: string) => {
     navigator.clipboard.writeText(token);
     setCopiedToken(true);
     setTimeout(() => setCopiedToken(false), 2000);
   };
 
-  const handleRevoke = (token) => {
+  const handleRevoke = (token: ApiToken) => {
     setSelectedToken(token);
     setShowRevokeModal(true);
   };

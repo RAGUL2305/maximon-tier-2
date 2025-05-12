@@ -18,7 +18,7 @@ const InsightRouter = () => {
     { id: "memory", name: "Memory Loom", description: "For brand knowledge updates" }
   ];
 
-  const handleRouteInsight = (insightId, destination) => {
+  const handleRouteInsight = (insightId:any, destination:any) => {
     setInsights(insights.map(insight => 
       insight.id === insightId 
         ? { ...insight, status: "routed", destination } 
@@ -32,7 +32,7 @@ const InsightRouter = () => {
     source: ""
   });
 
-  const handleFilterChange = (filterType, value) => {
+  const handleFilterChange = (filterType: any, value: any) => {
     setFilters({...filters, [filterType]: value});
   };
 
@@ -45,7 +45,7 @@ const InsightRouter = () => {
   // Get unique sources for filter dropdown
   const sources = [...new Set(insights.map(insight => insight.source))];
 
-  const getSeverityIcon = (severity) => {
+  const getSeverityIcon = (severity:any) => {
     switch(severity) {
       case 'high': return <AlertTriangle className="text-red-500" />;
       case 'medium': return <AlertCircle className="text-yellow-500" />;
@@ -160,7 +160,7 @@ const InsightRouter = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="py-4 px-4 text-center text-gray-500">
+                <td className="py-4 px-4 text-center text-gray-500">
                   No insights match the current filters
                 </td>
               </tr>

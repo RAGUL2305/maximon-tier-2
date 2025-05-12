@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
-import { 
-  BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  PieChart, Pie, Cell
+import { Bell, Eye, Filter, MessageSquare, RefreshCw, Search } from 'lucide-react';
+import { useState } from 'react';
+import {
+  CartesianGrid,
+  Cell,
+  Legend,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis, YAxis
 } from 'recharts';
-import { Bell, Search, AlertTriangle, Check, Eye, Filter, RefreshCw, MessageSquare } from 'lucide-react';
 
 const SignalScope = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -216,7 +224,7 @@ const SignalScope = () => {
                         dataKey="value"
                         label={({name, percent}) => `${name}: ${(percent * 100).toFixed(0)}%`}
                       >
-                        {signalTypes.map((entry, index) => (
+                        {signalTypes.map((_, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>

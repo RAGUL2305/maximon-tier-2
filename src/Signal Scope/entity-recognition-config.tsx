@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, Plus, Trash2, Save, RefreshCw } from 'lucide-react';
+import { Plus, RefreshCw, Save, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 
 const EntityRecognitionConfig = () => {
   const [entities, setEntities] = useState([
@@ -13,8 +13,8 @@ const EntityRecognitionConfig = () => {
   const [showAddEntity, setShowAddEntity] = useState(false);
   const [newEntity, setNewEntity] = useState({ name: '', type: 'Organization', confidence: 0.75, active: true });
   const [isTestingEntity, setIsTestingEntity] = useState(false);
-  const [testResults, setTestResults] = useState(null);
-  const [selectedEntity, setSelectedEntity] = useState(null);
+  const [testResults, setTestResults] = useState<any>(null);
+  const [selectedEntity, setSelectedEntity] = useState<any>(null);
 
   const entityTypes = ['Organization', 'Person', 'Asset', 'Event', 'Location', 'Custom'];
 
@@ -33,17 +33,17 @@ const EntityRecognitionConfig = () => {
     setShowAddEntity(false);
   };
 
-  const handleDeleteEntity = (id) => {
+  const handleDeleteEntity = (id: any) => {
     setEntities(entities.filter(entity => entity.id !== id));
   };
 
-  const toggleActive = (id) => {
+  const toggleActive = (id:any) => {
     setEntities(entities.map(entity => 
       entity.id === id ? { ...entity, active: !entity.active } : entity
     ));
   };
 
-  const handleTestEntity = (entity) => {
+  const handleTestEntity = (entity: any) => {
     setIsTestingEntity(true);
     setSelectedEntity(entity);
     
@@ -246,7 +246,7 @@ const EntityRecognitionConfig = () => {
           <div className="bg-gray-50 p-3 rounded-md">
             <p className="text-sm text-gray-500 mb-2">Sample Recognized Sentences</p>
             <ul className="space-y-2 text-sm">
-              {testResults.sampleTexts.map((text, index) => (
+              {testResults.sampleTexts.map((text: any, index: any) => (
                 <li key={index} className="p-2 bg-white rounded border">
                   {text.replace('[ENTITY]', `<span class="font-semibold text-indigo-600">${selectedEntity.name}</span>`)}
                 </li>

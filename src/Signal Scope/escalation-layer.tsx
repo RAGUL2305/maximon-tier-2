@@ -76,23 +76,23 @@ const EscalationLayer = () => {
     setSelectedSignal({...selectedSignal, status: 'In Progress', assignedTo: teamId});
   };
   
-  const handleResolve = (resolution: any) => {
-    if (!selectedSignal) return;
+  // const handleResolve = (resolution: any) => {
+  //   if (!selectedSignal) return;
     
-    const updatedSignals = signalList.map(signal => {
-      if (signal.id === selectedSignal.id) {
-        return {
-          ...signal,
-          status: 'Resolved',
-          resolution
-        };
-      }
-      return signal;
-    });
+  //   const updatedSignals = signalList.map(signal => {
+  //     if (signal.id === selectedSignal.id) {
+  //       return {
+  //         ...signal,
+  //         status: 'Resolved',
+  //         resolution
+  //       };
+  //     }
+  //     return signal;
+  //   });
     
-    setSignalList(updatedSignals);
-    setSelectedSignal(null);
-  };
+  //   setSignalList(updatedSignals);
+  //   setSelectedSignal(null);
+  // };
   
   const getStatusIcon = (status:any) => {
     switch (status) {

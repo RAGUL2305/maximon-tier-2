@@ -261,7 +261,7 @@ export default function SignalScoringEngine() {
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {Object.entries(selectedSignal.scores).map(
-                        ([metric, score]) => (
+                        ([metric, score]:any) => (
                           <div
                             key={metric}
                             className="bg-gray-50 p-3 rounded-md"
@@ -339,7 +339,7 @@ export default function SignalScoringEngine() {
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {Object.entries(thresholds).map(([metric, value]) => (
+                  {Object.entries(thresholds).map(([metric, value]:any) => (
                     <div key={metric} className="mb-3">
                       <label className="block text-sm font-medium text-gray-700 mb-1 capitalize">
                         {metric} Threshold: {value}

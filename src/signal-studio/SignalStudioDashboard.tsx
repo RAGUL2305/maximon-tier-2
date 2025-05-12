@@ -131,131 +131,20 @@ const SignalStudioDashboard = () => {
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
-          <div className="p-4">
-            <button className="w-full bg-blue-600 text-white rounded-lg py-2 px-4 flex items-center justify-center space-x-2 hover:bg-blue-700">
-              <Plus size={18} />
-              <span>New Draft</span>
-            </button>
-          </div>
-          <nav className="flex-1 overflow-y-auto p-2">
-            <ul className="space-y-1">
-              <li>
-                <button
-                  className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 ${
-                    activeTab === "dashboard"
-                      ? "bg-blue-50 text-blue-600"
-                      : "hover:bg-gray-100"
-                  }`}
-                  onClick={() => setActiveTab("dashboard")}
-                >
-                  <span className="w-5 h-5 flex items-center justify-center">
-                    <FileText size={18} />
-                  </span>
-                  <span>Dashboard</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 ${
-                    activeTab === "drafts"
-                      ? "bg-blue-50 text-blue-600"
-                      : "hover:bg-gray-100"
-                  }`}
-                  onClick={() => setActiveTab("drafts")}
-                >
-                  <span className="w-5 h-5 flex items-center justify-center">
-                    <FileText size={18} />
-                  </span>
-                  <span>Draft List</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 ${
-                    activeTab === "visual"
-                      ? "bg-blue-50 text-blue-600"
-                      : "hover:bg-gray-100"
-                  }`}
-                  onClick={() => setActiveTab("visual")}
-                >
-                  <span className="w-5 h-5 flex items-center justify-center">
-                    <Image size={18} />
-                  </span>
-                  <span>Visual Asset Studio</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 ${
-                    activeTab === "snippets"
-                      ? "bg-blue-50 text-blue-600"
-                      : "hover:bg-gray-100"
-                  }`}
-                  onClick={() => setActiveTab("snippets")}
-                >
-                  <span className="w-5 h-5 flex items-center justify-center">
-                    <FileText size={18} />
-                  </span>
-                  <span>Snippet Manager</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 ${
-                    activeTab === "prompts"
-                      ? "bg-blue-50 text-blue-600"
-                      : "hover:bg-gray-100"
-                  }`}
-                  onClick={() => setActiveTab("prompts")}
-                >
-                  <span className="w-5 h-5 flex items-center justify-center">
-                    <BookOpen size={18} />
-                  </span>
-                  <span>Prompt Library</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 ${
-                    activeTab === "drift"
-                      ? "bg-blue-50 text-blue-600"
-                      : "hover:bg-gray-100"
-                  }`}
-                  onClick={() => setActiveTab("drift")}
-                >
-                  <span className="w-5 h-5 flex items-center justify-center">
-                    <AlertTriangle size={18} />
-                  </span>
-                  <span>Drift Dashboard</span>
-                </button>
-              </li>
-              <li>
-                <button
-                  className={`w-full text-left p-3 rounded-lg flex items-center space-x-3 ${
-                    activeTab === "governance"
-                      ? "bg-blue-50 text-blue-600"
-                      : "hover:bg-gray-100"
-                  }`}
-                  onClick={() => setActiveTab("governance")}
-                >
-                  <span className="w-5 h-5 flex items-center justify-center">
-                    <Settings size={18} />
-                  </span>
-                  <span>Brand Voice Governance</span>
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </div>
 
         {/* Dashboard content */}
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-              Signal Studio Dashboard
-            </h1>
+            <div className="flex justify-between items-center">
+              <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+                Signal Studio Dashboard
+              </h1>
 
+              <button className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <Plus className="w-4 h-4 mr-2" />
+                New Draft
+              </button>
+            </div>
             {/* KPI Tiles */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               {kpiData.map((kpi, index) => (

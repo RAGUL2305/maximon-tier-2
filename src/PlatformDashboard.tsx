@@ -92,8 +92,20 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "Protocol Viewer", path: "/publishzone/protocol" },
   ],
   Core: [
-    { title: "Usage Dashboard", path: "/analytics/usagedashboard" },
-    { title: "Audit Trail", path: "/analytics/audittrail" },
+    { title: "SignalCore", path: "/analytics/SignalCore" },
+    {
+      title: "DecisionEngineDashboard",
+      path: "/analytics/DecisionEngineDashboard",
+    },
+    { title: "GrowthSignalMapper", path: "/analytics/GrowthSignalMapper" },
+    {
+      title: "PerformanceAnalyticsDashboard",
+      path: "/analytics/PerformanceAnalyticsDashboard",
+    },
+    { title: "PersonaTriggerMatrix", path: "/analytics/PersonaTriggerMatrix" },
+    { title: "SignalCoreExportHub", path: "/analytics/SignalCoreExportHub" },
+    { title: "SignalIntakeConsole", path: "/analytics/SignalIntakeConsole" },
+    { title: "SimulationStudio", path: "/analytics/SimulationStudio" },
   ],
   Scope: [
     { title: "Memory Management", path: "/admintools/memorymanageement" },

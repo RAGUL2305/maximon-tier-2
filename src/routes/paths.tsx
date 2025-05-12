@@ -40,6 +40,16 @@ import APITokensPage from "../development-sdk/ApiTokensPage";
 import CLIAccessConfig from "../development-sdk/CliAccessConfig";
 import SDKLandingPage from "../development-sdk/SdkLandingPage";
 import WebhooksConfig from "../development-sdk/WebHooksConfig";
+import FallbackEscalationManager from "../signal-flow/FallbackEscalation";
+import JourneyAnalyticsDashboard from "../signal-flow/JourneyAnalyticsDashboard";
+import JourneyBuilder from "../signal-flow/JourneyBuilder";
+import JourneyDetailView from "../signal-flow/JourneyDetail";
+import JourneyListView from "../signal-flow/JourneyListView";
+import JourneyValidator from "../signal-flow/JourneyValidator";
+import PersonalChannelMap from "../signal-flow/PersonalChannelMap";
+import SignalFlowDashboard from "../signal-flow/SignalFlowDashboard";
+import SignalMonitor from "../signal-flow/SignalMonitorDashboard";
+import TriggerConfigurator from "../signal-flow/PersonalChannelMap";
 
 const Paths = () => {
   return (
@@ -110,6 +120,24 @@ const Paths = () => {
           <Route path="sdk/cliaccess" element={<CLIAccessConfig />} />
           <Route path="sdk/landing" element={<SDKLandingPage />} />
           <Route path="sdk/webhooks" element={<WebhooksConfig />} />
+          {/* Flow */}
+
+          <Route
+            path="fallbackescalation"
+            element={<FallbackEscalationManager />}
+          />
+          <Route
+            path="journeyanalytics"
+            element={<JourneyAnalyticsDashboard />}
+          />
+          <Route path="journeybuilder" element={<JourneyBuilder />} />
+          <Route path="journeydetail" element={<JourneyDetailView />} />
+          <Route path="journeylist" element={<JourneyListView />} />
+          <Route path="journeyvalidator" element={<JourneyValidator />} />
+          <Route path="personalchannel" element={<PersonalChannelMap />} />
+          <Route path="signalflow" element={<SignalFlowDashboard />} />
+          <Route path="signalmonitor" element={<SignalMonitor />} />
+          <Route path="triggerconfigurator" element={<TriggerConfigurator />} />
         </Route>
       </Routes>
     </Router>

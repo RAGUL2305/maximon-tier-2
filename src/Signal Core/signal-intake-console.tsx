@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Calendar, Filter, RefreshCw, AlertTriangle, CheckCircle, X, ChevronDown, Download } from 'lucide-react';
+import { AlertTriangle, Calendar, CheckCircle, ChevronDown, Download, RefreshCw, Search, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 const SignalIntakeConsole = () => {
   // Mock data for the signals
-  const [signals, setSignals] = useState([]);
+  const [signals, setSignals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filteredSignals, setFilteredSignals] = useState([]);
+  const [filteredSignals, setFilteredSignals] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [sourceFilter, setSourceFilter] = useState('All');
@@ -51,7 +51,7 @@ const SignalIntakeConsole = () => {
     setFilteredSignals(results);
   }, [searchTerm, statusFilter, sourceFilter, signals]);
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status:any) => {
     switch(status) {
       case 'New': return 'bg-blue-100 text-blue-800';
       case 'Mapped': return 'bg-green-100 text-green-800';
@@ -60,7 +60,7 @@ const SignalIntakeConsole = () => {
     }
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status:any) => {
     switch(status) {
       case 'New': return <AlertTriangle size={16} className="text-blue-800" />;
       case 'Mapped': return <CheckCircle size={16} className="text-green-800" />;
@@ -69,7 +69,7 @@ const SignalIntakeConsole = () => {
     }
   };
 
-  const handleRowClick = (index) => {
+  const handleRowClick = (index:any) => {
     if (expandedRow === index) {
       setExpandedRow(null);
     } else {
@@ -77,7 +77,7 @@ const SignalIntakeConsole = () => {
     }
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString:any) => {
     const date = new Date(dateString);
     return date.toLocaleString();
   };
@@ -198,7 +198,7 @@ const SignalIntakeConsole = () => {
                   </tr>
                   {expandedRow === index && (
                     <tr className="bg-gray-50">
-                      <td colSpan="6" className="px-6 py-4">
+                      <td className="px-6 py-4">
                         <div className="text-sm text-gray-700">
                           <h3 className="font-medium text-gray-900 mb-2">Signal Details</h3>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

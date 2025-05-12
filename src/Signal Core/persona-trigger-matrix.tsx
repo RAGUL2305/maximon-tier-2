@@ -1,5 +1,5 @@
-import  { useState, useEffect } from 'react';
-import { Check, X, Edit, AlertCircle, Save, PlusSquare, Info } from 'lucide-react';
+import { AlertCircle, Check, Edit, Info, PlusSquare, Save, X } from 'lucide-react';
+import { useState } from 'react';
 
 const PersonaTriggerMatrix = () => {
   // Sample data - in a real application this would come from an API

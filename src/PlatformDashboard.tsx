@@ -123,7 +123,14 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "AI Config", path: "/admintools/aiconfig" },
     { title: "Access Control", path: "/admintools/access" },
   ],
-  SDK: [{ title: "Content Management", path: "/signals/contentmanagement" }],
+  SDK: [
+    { title: "Api Docs Viewer", path: "/sdk/apidocs" },
+    { title: "Api Error Log", path: "/sdk/apierror" },
+    { title: "Api Tokens Page", path: "/sdk/apitokens" },
+    { title: "Cli Access Config", path: "/sdk/cliaccess" },
+    { title: "Sdk Landing Page", path: "/sdk/landing" },
+    { title: "Web Hooks Config", path: "/sdk/webhooks" },
+  ],
 };
 
 const systemHealth = {

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Search, X, Check, AlertTriangle, Clock, Eye } from 'lucide-react';
+import { AlertTriangle, Clock, Eye, Search, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const MemoryLookupConsole = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchTerm, setSearchTerm] = useState<any>('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedResult, setSelectedResult] = useState(null);
+  const [selectedResult, setSelectedResult] = useState<any>(null);
   const [advancedFilters, setAdvancedFilters] = useState({
     confidenceThreshold: 70,
     tags: []
@@ -70,12 +70,12 @@ const MemoryLookupConsole = () => {
   ];
 
   // Tags for filter dropdown
-  const availableTags = ['tone', 'guidelines', 'core', 'content', 'product', 'structure', 
+  const availableTags: any[] = ['tone', 'guidelines', 'core', 'content', 'product', 'structure', 
     'legal', 'compliance', 'sustainability', 'audience', 'segments', 'targeting', 
     'pricing', 'sales', 'messaging', 'competition', 'positioning'];
 
   // Handle search input change
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e: any) => {
     setSearchTerm(e.target.value);
   };
 
@@ -106,7 +106,7 @@ const MemoryLookupConsole = () => {
   };
 
   // Handle tag selection
-  const toggleTag = (tag) => {
+  const toggleTag = (tag: any) => {
     setAdvancedFilters(prev => {
       if (prev.tags.includes(tag)) {
         return { ...prev, tags: prev.tags.filter(t => t !== tag) };
@@ -125,7 +125,7 @@ const MemoryLookupConsole = () => {
   };
 
   // View memory object details
-  const viewDetails = (item) => {
+  const viewDetails = (item: any) => {
     setSelectedResult(item);
   };
 
@@ -142,7 +142,7 @@ const MemoryLookupConsole = () => {
   }, [advancedFilters]);
 
   // Handle Enter key press
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: any) => {
     if (e.key === 'Enter' && searchTerm.length >= 2) {
       handleSearch();
     }
@@ -216,7 +216,7 @@ const MemoryLookupConsole = () => {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Tags</label>
               <div className="flex flex-wrap gap-2">
-                {availableTags.map((tag) => (
+                {availableTags.map((tag: string) => (
                   <button
                     key={tag}
                     className={`text-xs px-2 py-1 rounded-full ${
@@ -273,7 +273,7 @@ const MemoryLookupConsole = () => {
                 <div>
                   <h3 className="text-sm font-medium text-gray-700 mb-2">Tags</h3>
                   <div className="flex flex-wrap gap-2">
-                    {selectedResult.tags.map((tag) => (
+                    {selectedResult.tags.map((tag: any) => (
                       <span
                         key={tag}
                         className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full"

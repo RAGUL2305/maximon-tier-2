@@ -1,8 +1,8 @@
+import { AlertCircle, AlertTriangle, ArrowRight, Check, ChevronRight, Filter, MessageSquare, Search, Users } from 'lucide-react';
 import { useState } from 'react';
-import { AlertTriangle, Check, X, MessageSquare, AlertCircle, Users, ChevronRight, ArrowRight, Search, Filter } from 'lucide-react';
 
 const EscalationLayer = () => {
-  const [selectedSignal, setSelectedSignal] = useState(null);
+  const [selectedSignal, setSelectedSignal] = useState<any>(null);
   const [signalList, setSignalList] = useState([
     {
       id: 'sig-001',
@@ -51,14 +51,14 @@ const EscalationLayer = () => {
     }
   ]);
   
-  const [teams, setTeams] = useState([
+  const [teams] = useState([
     { id: 'marketing-team', name: 'Marketing Team', members: 4 },
     { id: 'legal-team', name: 'Legal Team', members: 2 },
     { id: 'product-team', name: 'Product Team', members: 3 },
     { id: 'leadership-team', name: 'Leadership', members: 2 }
   ]);
   
-  const handleAssign = (teamId) => {
+  const handleAssign = (teamId: any) => {
     if (!selectedSignal) return;
     
     const updatedSignals = signalList.map(signal => {
@@ -76,7 +76,7 @@ const EscalationLayer = () => {
     setSelectedSignal({...selectedSignal, status: 'In Progress', assignedTo: teamId});
   };
   
-  const handleResolve = (resolution) => {
+  const handleResolve = (resolution: any) => {
     if (!selectedSignal) return;
     
     const updatedSignals = signalList.map(signal => {
@@ -94,7 +94,7 @@ const EscalationLayer = () => {
     setSelectedSignal(null);
   };
   
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status:any) => {
     switch (status) {
       case 'Pending':
         return <AlertTriangle className="text-yellow-500" size={16} />;
@@ -107,7 +107,7 @@ const EscalationLayer = () => {
     }
   };
   
-  const getSeverityBadge = (severity) => {
+  const getSeverityBadge = (severity: any) => {
     let color = "bg-gray-100 text-gray-800";
     
     switch (severity) {
@@ -303,7 +303,7 @@ const EscalationLayer = () => {
                         />
                         <div className="mt-2 flex justify-end">
                           <button
-                            onClick={() => handleResolve(document.getElementById('resolution-text').value)}
+                            // onClick={() => handleResolve(document.getElementById('resolution-text').value)}
                             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                           >
                             Mark as Resolved

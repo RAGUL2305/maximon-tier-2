@@ -1,5 +1,5 @@
-import  { useState, useEffect } from 'react';
-import { Check, X, Edit, AlertCircle, Save, PlusSquare, Info } from 'lucide-react';
+import { AlertCircle, Check, Edit, Info, PlusSquare, Save, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const PersonaTriggerMatrix = () => {
   // Sample data - in a real application this would come from an API
@@ -23,20 +23,20 @@ const PersonaTriggerMatrix = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [newPersona, setNewPersona] = useState({ name: '', description: '' });
   const [showNewPersonaForm, setShowNewPersonaForm] = useState(false);
-  const [selectedPersona, setSelectedPersona] = useState(null);
+  const [selectedPersona, setSelectedPersona] = useState<any>(null);
   const [showPersonaDetail, setShowPersonaDetail] = useState(false);
 
   // Initialize random connections for demo
-  // useEffect(() => {
-  //   const initialConnections = {};
-  //   personas.forEach(persona => {
-  //     triggers.forEach(trigger => {
-  //       // Randomly set some connections to true (about 40%)
-  //       initialConnections[`${persona.id}-${trigger.id}`] = Math.random() > 0.6;
-  //     });
-  //   });
-  //   setConnections(initialConnections);
-  // }, []);
+  useEffect(() => {
+    const initialConnections:any = {};
+    personas.forEach(persona => {
+      triggers.forEach(trigger => {
+        // Randomly set some connections to true (about 40%)
+        initialConnections[`${persona.id}-${trigger.id}`] = Math.random() > 0.6;
+      });
+    });
+    setConnections(initialConnections);
+  }, []);
 
   const toggleConnection = (personaId: number, triggerId: number) => {
     if (!isEditing) return;
@@ -107,19 +107,19 @@ const PersonaTriggerMatrix = () => {
       {showPersonaDetail && selectedPersona && (
         <div className="mb-6 p-4 bg-blue-50 rounded-md">
           <div className="flex justify-between">
-            {/* <h3 className="text-xl font-semibold text-blue-800">{selectedPersona.name}</h3> */}
+            <h3 className="text-xl font-semibold text-blue-800">{selectedPersona.name}</h3>
             <button onClick={() => setShowPersonaDetail(false)} className="text-gray-500">
               <X size={20} />
             </button>
           </div>
-          {/* <p className="text-gray-600 mb-2">{selectedPersona.description}</p> */}
+          <p className="text-gray-600 mb-2">{selectedPersona.description}</p>
           
           <h4 className="font-medium text-blue-700 mt-4">Active Triggers:</h4>
-          {/* <ul className="list-disc pl-5 mt-2">
+          <ul className="list-disc pl-5 mt-2">
             {triggers.filter(trigger => connections[`${selectedPersona.id}-${trigger.id}`]).map(trigger => (
               <li key={trigger.id} className="text-gray-700">{trigger.name} <span className="text-gray-500 text-sm">({trigger.source})</span></li>
             ))}
-          </ul> */}
+          </ul>
         </div>
       )}
 

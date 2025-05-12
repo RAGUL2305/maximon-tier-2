@@ -6,7 +6,7 @@ const MemoryLookupConsole = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedResult, setSelectedResult] = useState<any>(null);
-  const [advancedFilters, setAdvancedFilters] = useState({
+  const [advancedFilters, setAdvancedFilters] = useState<any>({
     confidenceThreshold: 70,
     tags: []
   });
@@ -107,7 +107,7 @@ const MemoryLookupConsole = () => {
 
   // Handle tag selection
   const toggleTag = (tag: any) => {
-    setAdvancedFilters(prev => {
+    setAdvancedFilters((prev: { tags: any[]; }) => {
       if (prev.tags.includes(tag)) {
         return { ...prev, tags: prev.tags.filter(t => t !== tag) };
       } else {
@@ -117,8 +117,8 @@ const MemoryLookupConsole = () => {
   };
 
   // Handle confidence threshold change
-  const handleConfidenceChange = (e) => {
-    setAdvancedFilters(prev => ({
+  const handleConfidenceChange = (e:any) => {
+    setAdvancedFilters((prev: any) => ({
       ...prev,
       confidenceThreshold: parseInt(e.target.value)
     }));

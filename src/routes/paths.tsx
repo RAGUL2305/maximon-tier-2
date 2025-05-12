@@ -19,7 +19,6 @@ import DraftListView from "../signal-studio/DraftListView";
 import AuditTrailLog from "../memory-loom/AuditTraIlLog";
 import BrandLexiconView from "../memory-loom/BrandLexiconView";
 import DriftScannerView from "../memory-loom/DriftScannner";
-import MemoryDrawer from "../memory-loom/MemoryDrawer";
 import MemoryLoomDashboard from "../memory-loom/MemoryLoomDashboard";
 import MemoryObjectDetail from "../memory-loom/MemoryObjectDetails";
 import MemoryObjectList from "../memory-loom/MemoryObjectList";
@@ -58,6 +57,13 @@ import PersonalChannelMap from "../signal-flow/PersonalChannelMap";
 import SignalFlowDashboard from "../signal-flow/SignalFlowDashboard";
 import SignalMonitor from "../signal-flow/SignalMonitorDashboard";
 import TriggerConfigurator from "../signal-flow/PersonalChannelMap";
+import EscalationManager from "../admin-tools/EscalationManager";
+import GovernanceGuardrailConfig from "../admin-tools/GovernanceGuardDrail";
+import MemorySyncPanel from "../admin-tools/MemorySyncPanel";
+import NotificationsPanel from "../admin-tools/NotificationPannel";
+import RolePermissionSystem from "../admin-tools/RolePermissions";
+import TrustScoreOverlay from "../admin-tools/TrustScoreOverlay";
+import VersionHistoryAuditLogs from "../admin-tools/VersionHistory";
 
 const Paths = () => {
   return (
@@ -138,7 +144,6 @@ const Paths = () => {
           <Route path="brandlexicon" element={<BrandLexiconView />} />
           <Route path="codex" element={<CodexUploadPage />} />
           <Route path="driftscanner" element={<DriftScannerView />} />
-          <Route path="memorydrawer" element={<MemoryDrawer />} />
           <Route path="memoryloomdashboard" element={<MemoryLoomDashboard />} />
           <Route path="memoryobjectdetails" element={<MemoryObjectDetail />} />
           <Route path="memoryobjectlist" element={<MemoryObjectList />} />
@@ -169,6 +174,17 @@ const Paths = () => {
           <Route path="signalflow" element={<SignalFlowDashboard />} />
           <Route path="signalmonitor" element={<SignalMonitor />} />
           <Route path="triggerconfigurator" element={<TriggerConfigurator />} />
+
+          {/* Admin tools */}
+
+          <Route path="escalation" element={<EscalationManager />} />
+          <Route path="governance" element={< GovernanceGuardrailConfig/>} />
+          <Route path="memorysync" element={<MemorySyncPanel />} />
+          <Route path="notification" element={<NotificationsPanel />} />
+          <Route path="rolepermission" element={< RolePermissionSystem/>} />
+          <Route path="trustscoreoverlay" element={< TrustScoreOverlay/>} />  
+          <Route path="versionhistory" element={< VersionHistoryAuditLogs/>} />
+          
         </Route>
       </Routes>
     </Router>

@@ -1,4 +1,5 @@
 import { Plus, Upload, AlertTriangle, User, Bell } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Mock data for KPI tiles
 const kpiData = [
@@ -77,6 +78,7 @@ const systemHealth = {
   warningMessage: "System Maintenance at 2 AM",
 };
 const Dashboard = () => {
+  const navigate = useNavigate();
   return (
     <>
       {/* Main Content */}
@@ -109,13 +111,28 @@ const Dashboard = () => {
               Quick Actions
             </h2>
             <div className="space-y-3">
-              <button className="flex items-center w-full px-3 py-2 text-left bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100">
+              <button
+                className="flex items-center w-full px-3 py-2 text-left bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100"
+                onClick={() => {
+                  navigate("/dashboard/studio/editor");
+                }}
+              >
                 <Plus size={16} className="mr-2" /> Create Draft
               </button>
-              <button className="flex items-center w-full px-3 py-2 text-left bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100">
+              <button
+                className="flex items-center w-full px-3 py-2 text-left bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100"
+                onClick={() => {
+                  navigate("codex");
+                }}
+              >
                 <Upload size={16} className="mr-2" /> Upload Codex
               </button>
-              <button className="flex items-center w-full px-3 py-2 text-left bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100">
+              <button
+                className="flex items-center w-full px-3 py-2 text-left bg-blue-50 text-blue-700 rounded-md hover:bg-blue-100"
+                onClick={() => {
+                  navigate("journeybuilder");
+                }}
+              >
                 <Plus size={16} className="mr-2" /> New Journey
               </button>
             </div>
@@ -203,8 +220,13 @@ const Dashboard = () => {
                     </span>
                   </div>
                 </div>
-                <a href="#" className="text-xs text-blue-600">
-                  Manage Roles
+                <a
+                  href="/dashboard/rolepermission"
+                  className="text-xs text-blue-600"
+                >
+                  <span className="ml-2 text-xs px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full">
+                    Manage Roles
+                  </span>
                 </a>
               </div>
 

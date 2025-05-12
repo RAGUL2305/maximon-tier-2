@@ -11,8 +11,10 @@ import {
   BarChart2,
   History,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const DraftDetailView = () => {
+  const navigate = useNavigate();
   const [content, setContent] = useState(
     "This innovative product leverages cutting-edge AI technology to transform how businesses operate. By streamlining workflows and automating routine tasks, it enables teams to focus on high-value strategic initiatives that drive growth. Our solution integrates seamlessly with existing systems while providing comprehensive analytics for data-driven decision making."
   );
@@ -63,11 +65,13 @@ const DraftDetailView = () => {
   ];
 
   const handleApprove = () => {
+    navigate("/dashboard/studio/detailview");
     setStatus("Approved");
   };
 
   const handleReject = () => {
     setStatus("Rejected");
+    navigate("/dashboard/studio/detailview");
   };
 
   const handleEdit = () => {
@@ -168,13 +172,13 @@ const DraftDetailView = () => {
                 <Edit3 size={16} className="mr-1" /> Edit
               </button>
               <button
-                onClick={handleApprove}
+                onClick={() => navigate("/dashboard/studio/listview")}
                 className="flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-md hover:bg-green-100"
               >
                 <CheckCircle size={16} className="mr-1" /> Approve
               </button>
               <button
-                onClick={handleReject}
+                onClick={() => navigate("/dashboard/studio/listview")}
                 className="flex items-center px-4 py-2 bg-red-50 text-red-700 rounded-md hover:bg-red-100"
               >
                 <XCircle size={16} className="mr-1" /> Reject

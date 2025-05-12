@@ -151,6 +151,7 @@ const DraftListView = () => {
 
     // Clear selection after action
     setSelectedDrafts([]);
+    navigate("/dashboard/studio/detailview")
   };
 
   // Get status badge style
@@ -364,7 +365,9 @@ const DraftListView = () => {
                       />
                     </td>
                     <td className="px-3 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-sm font-medium text-gray-900"
+                      onClick={()=>navigate("/dashboard/studio/detailview")}
+                      >
                         {draft.title}
                       </div>
                     </td>

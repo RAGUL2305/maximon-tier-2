@@ -45,45 +45,28 @@ const notifications = [
 
 const sidebarItems = [
   {
-    icon: <Home size={20} />,
-    label: "Dashboard",
-    path: "/dashboard",
-    active: true,
-  },
-  {
     icon: <FileText size={20} />,
     label: "Studio",
-    path: "/dashboard/studio",
   },
   {
     icon: <Brain size={20} />,
     label: "Loom",
-    path: "/dashboard/loom",
-    active: false,
   },
   {
     icon: <GitBranch size={20} />,
     label: "Flow",
-    path: "/dashboard/flow",
-    active: false,
   },
   {
     icon: <LineChart size={20} />,
     label: "Core",
-    path: "/dashboard/core",
-    active: false,
   },
   {
     icon: <Radio size={20} />,
     label: "Scope",
-    path: "/dashboard/scope",
-    active: false,
   },
   {
     icon: <Code size={20} />,
     label: "SDK",
-    path: "/dashboard/sdk",
-    active: false,
   },
 ];
 
@@ -147,12 +130,32 @@ const PlatformDashboard = () => {
 
         <nav className="mt-8 flex-1">
           <ul>
+            <li>
+              <button
+                onClick={() => {
+                  setActiveItem("Dashboard");
+                  navigate("/dashboard");
+                }}
+                className={`flex items-center w-full px-4 py-3 text-left ${
+                  activeItem === "Dashboard"
+                    ? "bg-gray-700"
+                    : "hover:bg-gray-700"
+                }`}
+              >
+                <span className="text-gray-300">{<Home size={20} />}</span>
+                <span className="hidden md:block ml-3 text-gray-200">
+                  Dashboard
+                </span>
+                {activeItem === "Dashboard" && (
+                  <span className="hidden md:block ml-auto h-2 w-2 rounded-full bg-blue-500"></span>
+                )}
+              </button>
+            </li>
             {sidebarItems.map((item, index) => (
               <li key={index}>
                 <button
                   onClick={() => {
                     setActiveItem(item.label);
-                    // navigate(item.path);
                   }}
                   className={`flex items-center w-full px-4 py-3 text-left ${
                     activeItem === item.label

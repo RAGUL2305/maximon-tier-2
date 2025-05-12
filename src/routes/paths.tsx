@@ -34,6 +34,16 @@ import PersonaTriggerMatrix from "../Signal Core/persona-trigger-matrix";
 import SignalCoreExportHub from "../Signal Core/signal-core-export-hub";
 import SignalIntakeConsole from "../Signal Core/signal-intake-console";
 import SimulationStudio from "../Signal Core/simulation-studio";
+import FallbackEscalationManager from "../signal-flow/FallbackEscalation";
+import JourneyAnalyticsDashboard from "../signal-flow/JourneyAnalyticsDashboard";
+import JourneyBuilder from "../signal-flow/JourneyBuilder";
+import JourneyDetailView from "../signal-flow/JourneyDetail";
+import JourneyListView from "../signal-flow/JourneyListView";
+import JourneyValidator from "../signal-flow/JourneyValidator";
+import PersonalChannelMap from "../signal-flow/PersonalChannelMap";
+import SignalFlowDashboard from "../signal-flow/SignalFlowDashboard";
+import SignalMonitor from "../signal-flow/SignalMonitorDashboard";
+import TriggerConfigurator from "../signal-flow/PersonalChannelMap";
 
 const Paths = () => {
   return (
@@ -88,15 +98,34 @@ const Paths = () => {
             element={<SimulationStudio />}
           />
           <Route path="audittrails" element={<AuditTrailLog />} />
-          <Route path="brandlexicon" element={<BrandLexiconView/>} />
-          <Route path="codex" element={<CodexUploadPage/>} />
-          <Route path="driftscanner" element={<DriftScannerView/>} /> 
-          <Route path="memorydrawer" element={<MemoryDrawer/>} />
-          <Route path="memoryloomdashboard" element={<MemoryLoomDashboard/>} /> 
-          <Route path="memoryobjectdetails" element={<MemoryObjectDetail/>} />
-          <Route path="memoryobjectlist" element={<MemoryObjectList/>} />
-          <Route path="searchconsole" element={<MemorySearchConsole/>} />
-          <Route path="messageautomizer" element={<MessageAtomizer/>} />
+          <Route path="brandlexicon" element={<BrandLexiconView />} />
+          <Route path="codex" element={<CodexUploadPage />} />
+          <Route path="driftscanner" element={<DriftScannerView />} />
+          <Route path="memorydrawer" element={<MemoryDrawer />} />
+          <Route path="memoryloomdashboard" element={<MemoryLoomDashboard />} />
+          <Route path="memoryobjectdetails" element={<MemoryObjectDetail />} />
+          <Route path="memoryobjectlist" element={<MemoryObjectList />} />
+          <Route path="searchconsole" element={<MemorySearchConsole />} />
+          <Route path="messageautomizer" element={<MessageAtomizer />} />
+
+          {/* Flow */}
+
+          <Route
+            path="fallbackescalation"
+            element={<FallbackEscalationManager />}
+          />
+          <Route
+            path="journeyanalytics"
+            element={<JourneyAnalyticsDashboard />}
+          />
+          <Route path="journeybuilder" element={<JourneyBuilder />} />
+          <Route path="journeydetail" element={<JourneyDetailView />} />
+          <Route path="journeylist" element={<JourneyListView />} />
+          <Route path="journeyvalidator" element={<JourneyValidator />} />
+          <Route path="personalchannel" element={<PersonalChannelMap />} />
+          <Route path="signalflow" element={<SignalFlowDashboard />} />
+          <Route path="signalmonitor" element={<SignalMonitor />} />
+          <Route path="triggerconfigurator" element={<TriggerConfigurator />} />
         </Route>
       </Routes>
     </Router>

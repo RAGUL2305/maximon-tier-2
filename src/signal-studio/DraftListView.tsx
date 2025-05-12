@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Search,
   Filter,
@@ -6,21 +6,30 @@ import {
   MoreHorizontal,
   CheckCircle,
   Clock,
-  AlertCircle,
   X,
   Download,
   Edit,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+type Drafts = {
+  id: string;
+  title: string;
+  status: string;
+  toneScore: number;
+  lastUpdated: Date;
+  createdBy: string;
+  exported: boolean;
+};
+
 const DraftListView = () => {
   // Simulated draft data
-  const [drafts, setDrafts] = useState([]);
-  const [filteredDrafts, setFilteredDrafts] = useState([]);
+  const [drafts, setDrafts] = useState<Drafts[]>([]);
+  const [filteredDrafts, setFilteredDrafts] = useState<Drafts[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [selectedDrafts, setSelectedDrafts] = useState([]);
+  const [selectedDrafts, setSelectedDrafts] = useState<string[]>([]);
   const navigate = useNavigate();
 
   // Sort states
@@ -30,7 +39,7 @@ const DraftListView = () => {
   // Generate mock draft data
   useEffect(() => {
     const mockDrafts = Array(12)
-      .fill()
+      .fill(null)
       .map((_, idx) => {
         const statuses = ["Pending", "Approved", "Rejected"];
         const status = statuses[Math.floor(Math.random() * statuses.length)];
@@ -87,8 +96,10 @@ const DraftListView = () => {
           : b.toneScore - a.toneScore;
       } else if (sortField === "lastUpdated") {
         return sortDirection === "asc"
-          ? new Date(a.lastUpdated) - new Date(b.lastUpdated)
-          : new Date(b.lastUpdated) - new Date(a.lastUpdated);
+          ? new Date(a.lastUpdated).getTime() -
+              new Date(b.lastUpdated).getTime()
+          : new Date(b.lastUpdated).getTime() -
+              new Date(a.lastUpdated).getTime();
       }
       return 0;
     });
@@ -97,7 +108,7 @@ const DraftListView = () => {
   }, [drafts, searchTerm, statusFilter, sortField, sortDirection]);
 
   // Toggle sort
-  const toggleSort = (field) => {
+  const toggleSort = (field: string) => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -107,7 +118,7 @@ const DraftListView = () => {
   };
 
   // Handle checkbox selection
-  const toggleDraftSelection = (draftId) => {
+  const toggleDraftSelection = (draftId: string) => {
     if (selectedDrafts.includes(draftId)) {
       setSelectedDrafts(selectedDrafts.filter((id) => id !== draftId));
     } else {
@@ -116,7 +127,7 @@ const DraftListView = () => {
   };
 
   // Bulk actions
-  const handleBulkAction = (action) => {
+  const handleBulkAction = (action: string) => {
     if (selectedDrafts.length === 0) return;
 
     if (action === "approve") {
@@ -144,7 +155,7 @@ const DraftListView = () => {
   };
 
   // Get status badge style
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case "Approved":
         return (
@@ -173,7 +184,7 @@ const DraftListView = () => {
   };
 
   // Format date for display
-  const formatDate = (date) => {
+  const formatDate = (date: Date) => {
     const d = new Date(date);
     return d.toLocaleDateString("en-US", {
       month: "short",
@@ -187,10 +198,11 @@ const DraftListView = () => {
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Drafts</h1>
-          <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-          onClick={() => {
-            navigate("/dashboard/studio/editor");
-          }}
+          <button
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+            onClick={() => {
+              navigate("/dashboard/studio/editor");
+            }}
           >
             + New Draft
           </button>

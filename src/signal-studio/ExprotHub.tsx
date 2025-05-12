@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Check,
   AlertTriangle,
@@ -13,7 +13,7 @@ import {
 const ExportHub = () => {
   const [selectedFormat, setSelectedFormat] = useState("DOCX");
   const [showBatch, setShowBatch] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
 
   const mockExports = [
     {
@@ -66,7 +66,7 @@ const ExportHub = () => {
     },
   ];
 
-  const toggleItem = (id) => {
+  const toggleItem = (id: number) => {
     if (selectedItems.includes(id)) {
       setSelectedItems(selectedItems.filter((itemId) => itemId !== id));
     } else {
@@ -79,7 +79,7 @@ const ExportHub = () => {
     setSelectedItems([]);
   };
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
       case "Complete":
         return <Check className="text-green-500" size={18} />;

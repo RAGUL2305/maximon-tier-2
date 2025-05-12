@@ -108,7 +108,7 @@ const APITokensPage = () => {
     const expiryDate = new Date(now);
     expiryDate.setDate(now.getDate() + expiryDays);
 
-    const newTokenObj = {
+    const newTokenObj: ApiToken = {
       id: `new-${Date.now()}`,
       name: newTokenName,
       created: now.toISOString(),
@@ -136,8 +136,8 @@ const APITokensPage = () => {
   };
 
   const confirmRevoke = () => {
-    const updatedTokens = tokens.map((token) =>
-      token.id === selectedToken.id ? { ...token, status: "expired" } : token
+    const updatedTokens: ApiToken[] = tokens.map((token) =>
+      token.id === selectedToken?.id ? { ...token, status: "expired" as const } : token
     );
     setTokens(updatedTokens);
     setTokenCount(tokenCount - 1);

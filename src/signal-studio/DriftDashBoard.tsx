@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   AlertTriangle,
   CheckCircle,
@@ -10,7 +10,7 @@ import {
 
 const DriftDashboard = () => {
   // Sample data - would come from API in real implementation
-  const [driftData, setDriftData] = useState({
+  const [driftData] = useState({
     overallScore: 78,
     threshold: 85,
     moduleScores: [
@@ -67,13 +67,13 @@ const DriftDashboard = () => {
     }, 1500);
   };
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     if (status === "critical") return "text-red-600";
     if (status === "warning") return "text-amber-500";
     return "text-green-600";
   };
 
-  const getSeverityBadge = (severity) => {
+  const getSeverityBadge = (severity: string) => {
     if (severity === "high")
       return (
         <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800">
@@ -93,7 +93,7 @@ const DriftDashboard = () => {
     );
   };
 
-  const getScoreColor = (score, threshold) => {
+  const getScoreColor = (score: number, threshold: number) => {
     if (score < threshold - 10) return "text-red-600";
     if (score < threshold) return "text-amber-500";
     return "text-green-600";

@@ -10,11 +10,11 @@ import {
   FileText,
   BarChart2,
   History,
-  Settings,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const DraftDetailView = () => {
+  const navigate = useNavigate();
   const [content, setContent] = useState(
     "This innovative product leverages cutting-edge AI technology to transform how businesses operate. By streamlining workflows and automating routine tasks, it enables teams to focus on high-value strategic initiatives that drive growth. Our solution integrates seamlessly with existing systems while providing comprehensive analytics for data-driven decision making."
   );
@@ -23,8 +23,7 @@ const DraftDetailView = () => {
   const [toneScore, setToneScore] = useState(87);
   const [driftScore, setDriftScore] = useState(92);
   const [showComments, setShowComments] = useState(false);
-  const navigate = useNavigate();
-  const [governanceWarnings, setGovernanceWarnings] = useState([
+  const [governanceWarnings] = useState([
     {
       type: "Brand Voice",
       message: "Consider using more approachable language in paragraph 2",

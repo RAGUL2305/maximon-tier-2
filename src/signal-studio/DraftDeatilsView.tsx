@@ -12,6 +12,7 @@ import {
   History,
   Settings,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const DraftDetailView = () => {
   const [content, setContent] = useState(
@@ -22,6 +23,7 @@ const DraftDetailView = () => {
   const [toneScore, setToneScore] = useState(87);
   const [driftScore, setDriftScore] = useState(92);
   const [showComments, setShowComments] = useState(false);
+  const navigate = useNavigate();
   const [governanceWarnings, setGovernanceWarnings] = useState([
     {
       type: "Brand Voice",
@@ -64,11 +66,13 @@ const DraftDetailView = () => {
   ];
 
   const handleApprove = () => {
+    navigate("/dashboard/studio/detailview");
     setStatus("Approved");
   };
 
   const handleReject = () => {
     setStatus("Rejected");
+    navigate("/dashboard/studio/detailview");
   };
 
   const handleEdit = () => {
@@ -169,13 +173,13 @@ const DraftDetailView = () => {
                 <Edit3 size={16} className="mr-1" /> Edit
               </button>
               <button
-                onClick={handleApprove}
+                onClick={() => navigate("/dashboard/studio/listview")}
                 className="flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-md hover:bg-green-100"
               >
                 <CheckCircle size={16} className="mr-1" /> Approve
               </button>
               <button
-                onClick={handleReject}
+                onClick={() => navigate("/dashboard/studio/listview")}
                 className="flex items-center px-4 py-2 bg-red-50 text-red-700 rounded-md hover:bg-red-100"
               >
                 <XCircle size={16} className="mr-1" /> Reject

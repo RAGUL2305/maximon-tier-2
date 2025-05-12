@@ -72,16 +72,11 @@ const sidebarItems = [
 
 const subMenus: Record<string, { title: string; path: string }[]> = {
   Studio: [
-    { title: "Launcher", path: "/studio/launcher" },
-    { title: "Edit Draft Page", path: "/studio/editor" },
-    { title: "Visual Assest Studio", path: "/studio/visualasseststudio" },
-    { title: "Snippet", path: "/studio/snippet" },
-    { title: "Propmt", path: "/studio/prompt" },
-    { title: "Export Hub", path: "/studio/exporthub" },
-    { title: "Governence", path: "/studio/governence" },
-    { title: "Drift DashBoard", path: "/studio/drift" },
-    { title: "Draft DetailsView", path: "/studio/detailview" },
-    { title: "Draft ListView", path: "/studio/listview" },
+    { title: "Launcher", path: "/createzone/launcher" },
+    { title: "Editor", path: "/createzone/editor" },
+    { title: "Visual Studio", path: "/createzone/visualstudio" },
+    { title: "Validator", path: "/createzone/validator" },
+    { title: "Assistant", path: "/createzone/assistant" },
   ],
   Loom: [
     { title: "Audit Trail", path: "/audittrails" },
@@ -96,10 +91,16 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "Message Automizer", path: "/messageautomizer" },
   ],
   Flow: [
-    { title: "Export Hub", path: "/publishzone/export" },
-    { title: "Integration", path: "/publishzone/integration" },
-    { title: "CLI/SDK", path: "/publishzone/cli" },
-    { title: "Protocol Viewer", path: "/publishzone/protocol" },
+    { title: "Fallback escalation", path: "/fallbackescalation" },
+    { title: "Journey Analytics dashboard", path: "/journeyanalytics" },
+    { title: "Journey Builder", path: "/journeybuilder" },
+    { title: "Journey Detailview", path: "/journeydetail" },
+    { title: "Journey Listview", path: "/journeylist" },
+    { title: "Journey Validator", path: "/journeyvalidator" },
+    { title: "Personal Channelmap", path: "/personalchannel" },
+    { title: "Signal flow dashboard", path: "/signalflow" },
+    { title: "Signal monitor dashboard", path: "/signalmonitor" },
+    { title: "Trigger Configurator", path: "/triggerconfigurator" },
   ],
   Core: [
     { title: "SignalCore", path: "/analytics/SignalCore" },
@@ -126,6 +127,7 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
   SDK: [{ title: "Content Management", path: "/signals/contentmanagement" }],
 };
 
+// Mock system health data
 const systemHealth = {
   apiUptime: "99.98%",
   lastSyncStatus: "Completed 24 min ago",

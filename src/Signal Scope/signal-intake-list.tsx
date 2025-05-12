@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Filter, Calendar, RefreshCw, ChevronDown, ExternalLink, AlertCircle } from 'lucide-react';
+import { AlertCircle, ChevronDown, RefreshCw, Search } from 'lucide-react';
+import { useState } from 'react';
 
 const SignalIntakeList = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +26,7 @@ const SignalIntakeList = () => {
   });
   
   // Format date for display
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: any) => {
     const date = new Date(dateString);
     return date.toLocaleString('en-US', {
       month: 'short', 
@@ -37,7 +37,7 @@ const SignalIntakeList = () => {
   };
   
   // Get status badge color
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: any) => {
     switch(status) {
       case 'New': return 'bg-blue-100 text-blue-800';
       case 'Scored': return 'bg-green-100 text-green-800';

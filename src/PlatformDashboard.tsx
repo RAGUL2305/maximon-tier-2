@@ -72,11 +72,16 @@ const sidebarItems = [
 
 const subMenus: Record<string, { title: string; path: string }[]> = {
   Studio: [
-    { title: "Launcher", path: "/createzone/launcher" },
-    { title: "Editor", path: "/createzone/editor" },
-    { title: "Visual Studio", path: "/createzone/visualstudio" },
-    { title: "Validator", path: "/createzone/validator" },
-    { title: "Assistant", path: "/createzone/assistant" },
+    { title: "Launcher", path: "/studio/launcher" },
+    { title: "Edit Draft Page", path: "/studio/editor" },
+    { title: "Visual Assest Studio", path: "/studio/visualasseststudio" },
+    { title: "Snippet", path: "/studio/snippet" },
+    { title: "Propmt", path: "/studio/prompt" },
+    { title: "Export Hub", path: "/studio/exporthub" },
+    { title: "Governence", path: "/studio/governence" },
+    { title: "Drift DashBoard", path: "/studio/drift" },
+    { title: "Draft DetailsView", path: "/studio/detailview" },
+    { title: "Draft ListView", path: "/studio/listview" },
   ],
   Loom: [
     { title: "Audit Trail", path: "/audittrails" },

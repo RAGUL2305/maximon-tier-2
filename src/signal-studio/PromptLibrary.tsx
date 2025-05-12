@@ -1,5 +1,7 @@
+import { useState } from "react";
+
 function PromptLibrary() {
-  const [prompts, setPrompts] = React.useState([
+  const [prompts, setPrompts] = useState([
     {
       id: 1,
       title: "Product Launch Email",
@@ -47,12 +49,12 @@ function PromptLibrary() {
     },
   ]);
 
-  const [filteredPrompts, setFilteredPrompts] = React.useState(prompts);
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [selectedTags, setSelectedTags] = React.useState([]);
-  const [expandedPromptId, setExpandedPromptId] = React.useState(null);
-  const [isAddingPrompt, setIsAddingPrompt] = React.useState(false);
-  const [newPrompt, setNewPrompt] = React.useState({
+  const [filteredPrompts, setFilteredPrompts] = useState(prompts);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [expandedPromptId, setExpandedPromptId] = useState(null);
+  const [isAddingPrompt, setIsAddingPrompt] = useState(false);
+  const [newPrompt, setNewPrompt] = useState({
     title: "",
     description: "",
     template: "",
@@ -75,7 +77,7 @@ function PromptLibrary() {
     "Announcement",
   ];
 
-  React.useEffect(() => {
+  useEffect(() => {
     let filtered = prompts;
 
     // Filter by search term

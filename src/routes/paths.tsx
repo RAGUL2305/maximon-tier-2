@@ -58,6 +58,13 @@ import PersonalChannelMap from "../signal-flow/PersonalChannelMap";
 import SignalFlowDashboard from "../signal-flow/SignalFlowDashboard";
 import SignalMonitor from "../signal-flow/SignalMonitorDashboard";
 import TriggerConfigurator from "../signal-flow/PersonalChannelMap";
+import EscalationManager from "../admin-tools/EscalationManager";
+import GovernanceGuardrailConfig from "../admin-tools/GovernanceGuardDrail";
+import MemorySyncPanel from "../admin-tools/MemorySyncPanel";
+import NotificationsPanel from "../admin-tools/NotificationPannel";
+import RolePermissionSystem from "../admin-tools/RolePermissions";
+import TrustScoreOverlay from "../admin-tools/TrustScoreOverlay";
+import VersionHistoryAuditLogs from "../admin-tools/VersionHistory";
 
 const Paths = () => {
   return (
@@ -169,6 +176,17 @@ const Paths = () => {
           <Route path="signalflow" element={<SignalFlowDashboard />} />
           <Route path="signalmonitor" element={<SignalMonitor />} />
           <Route path="triggerconfigurator" element={<TriggerConfigurator />} />
+
+          {/* Admin tools */}
+
+          <Route path="escalation" element={<EscalationManager />} />
+          <Route path="governance" element={< GovernanceGuardrailConfig/>} />
+          <Route path="memorysync" element={<MemorySyncPanel />} />
+          <Route path="notification" element={<NotificationsPanel />} />
+          <Route path="rolepermission" element={< RolePermissionSystem/>} />
+          <Route path="trustscoreoverlay" element={< TrustScoreOverlay/>} />  
+          <Route path="versionhistory" element={< VersionHistoryAuditLogs/>} />
+          
         </Route>
       </Routes>
     </Router>

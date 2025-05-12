@@ -12,7 +12,6 @@ import {
   Code,
   AlertTriangle,
   Settings,
-  Key,
   Users,
   Shield,
   LogOut,
@@ -98,9 +97,15 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
   ],
   Core: [
     { title: "SignalCore", path: "/core/signal-core" },
-    { title: "DecisionEngineDashboard", path: "/core/decision-engine-dashboard" },
+    {
+      title: "DecisionEngineDashboard",
+      path: "/core/decision-engine-dashboard",
+    },
     { title: "GrowthSignalMapper", path: "/core/growth-signal-mapper" },
-    { title: "PerformanceAnalyticsDashboard", path: "/core/performance-analytics-dashboard" },
+    {
+      title: "PerformanceAnalyticsDashboard",
+      path: "/core/performance-analytics-dashboard",
+    },
     { title: "PersonaTriggerMatrix", path: "/core/persona-trigger-matrix" },
     { title: "SignalCoreExportHub", path: "/core/signal-core-exportHub" },
     { title: "SignalIntakeConsole", path: "/core/signal-intake-console" },
@@ -109,7 +114,10 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
   Scope: [
     { title: "SignalScope", path: "/scope/signal-scope" },
     { title: "DriftInsightDashboard", path: "/scope/drift-insight-dashboard" },
-    { title: "EntityRecognitionConfig", path: "/scope/entity-recognition-config" },
+    {
+      title: "EntityRecognitionConfig",
+      path: "/scope/entity-recognition-config",
+    },
     { title: "EscalationLayer", path: "/scope/escalation-layer" },
     { title: "InsightRouter", path: "/scope/insight-router" },
     { title: "MemoryLookupConsole", path: "/scope/memory-lookup-console" },
@@ -128,52 +136,87 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
 
 // Admin submenu items
 const adminSubMenus = [
-  { 
-    title: "User Profile", 
-    path: "/admin/profile",
-    icon: <User size={16} className="mr-2" />
+  {
+    title: "Escalation Manager",
+    path: "/escalation",
+    icon: <User size={16} className="mr-2" />,
   },
-  { 
-    title: "Account Security", 
-    path: "/admin/security",
-    icon: <Lock size={16} className="mr-2" />
+  {
+    title: "Governance Guarddrail",
+    path: "/governance",
+    icon: <Lock size={16} className="mr-2" />,
   },
-  { 
-    title: "Team Management", 
-    path: "/admin/team",
-    icon: <Users size={16} className="mr-2" />
+  {
+    title: "Memorysync Panel",
+    path: "/memorysync",
+    icon: <Users size={16} className="mr-2" />,
   },
-  { 
-    title: "Admin Console", 
-    path: "/admin/console",
-    icon: <Shield size={16} className="mr-2" />
+  {
+    title: "Notification Pannel",
+    path: "/notification",
+    icon: <Shield size={16} className="mr-2" />,
   },
-  { 
-    title: "System Settings", 
-    path: "/admin/settings",
-    icon: <Settings size={16} className="mr-2" />
+  {
+    title: "Role Permissions",
+    path: "/rolepermission",
+    icon: <Settings size={16} className="mr-2" />,
   },
-  { 
-    title: "Database Management", 
-    path: "/admin/database",
-    icon: <Database size={16} className="mr-2" />
+  {
+    title: "Trust Score",
+    path: "/trustscoreoverlay",
+    icon: <Database size={16} className="mr-2" />,
   },
-  { 
-    title: "Server Status", 
-    path: "/admin/server",
-    icon: <Server size={16} className="mr-2" />
+  {
+    title: "Version History",
+    path: "/versionhistory",
+    icon: <Server size={16} className="mr-2" />,
   },
-  { 
-    title: "Email Configuration", 
-    path: "/admin/email",
-    icon: <Mail size={16} className="mr-2" />
-  },
-  { 
-    title: "Log Out", 
-    path: "/logout",
-    icon: <LogOut size={16} className="mr-2" />,
-    className: "border-t border-gray-600 mt-2 pt-2"
-  },
+  // {
+  //   title: "User Profile",
+  //   path: "/admin/profile",
+  //   icon: <User size={16} className="mr-2" />
+  // },
+  // {
+  //   title: "Account Security",
+  //   path: "/admin/security",
+  //   icon: <Lock size={16} className="mr-2" />
+  // },
+  // {
+  //   title: "Team Management",
+  //   path: "/admin/team",
+  //   icon: <Users size={16} className="mr-2" />
+  // },
+  // {
+  //   title: "Admin Console",
+  //   path: "/admin/console",
+  //   icon: <Shield size={16} className="mr-2" />
+  // },
+  // {
+  //   title: "System Settings",
+  //   path: "/admin/settings",
+  //   icon: <Settings size={16} className="mr-2" />
+  // },
+  // {
+  //   title: "Database Management",
+  //   path: "/admin/database",
+  //   icon: <Database size={16} className="mr-2" />
+  // },
+  // {
+  //   title: "Server Status",
+  //   path: "/admin/server",
+  //   icon: <Server size={16} className="mr-2" />
+  // },
+  // {
+  //   title: "Email Configuration",
+  //   path: "/admin/email",
+  //   icon: <Mail size={16} className="mr-2" />
+  // },
+  // {
+  //   title: "Log Out",
+  //   path: "/logout",
+  //   icon: <LogOut size={16} className="mr-2" />,
+  //   className: "border-t border-gray-600 mt-2 pt-2",
+  // },
 ];
 
 const systemHealth = {
@@ -209,7 +252,9 @@ const PlatformDashboard = () => {
                   navigate("/dashboard");
                 }}
                 className={`flex items-center w-full px-4 py-3 text-left ${
-                  activeItem === "Dashboard" ? "bg-gray-700" : "hover:bg-gray-700"
+                  activeItem === "Dashboard"
+                    ? "bg-gray-700"
+                    : "hover:bg-gray-700"
                 }`}
               >
                 <span className="text-gray-300">{<Home size={20} />}</span>
@@ -230,7 +275,9 @@ const PlatformDashboard = () => {
                     );
                   }}
                   className={`flex items-center w-full px-4 py-3 text-left ${
-                    activeItem === item.label ? "bg-gray-700" : "hover:bg-gray-700"
+                    activeItem === item.label
+                      ? "bg-gray-700"
+                      : "hover:bg-gray-700"
                   }`}
                 >
                   <span className="text-gray-300">{item.icon}</span>
@@ -264,7 +311,7 @@ const PlatformDashboard = () => {
 
         {/* Admin Section with Submenu */}
         <div className="p-4 relative">
-          <button 
+          <button
             onClick={() => setShowAdminMenu(!showAdminMenu)}
             className={`flex items-center w-full p-2 rounded-md ${
               showAdminMenu ? "bg-gray-700" : "hover:bg-gray-700"
@@ -358,7 +405,10 @@ const PlatformDashboard = () => {
                           <div className="flex items-start">
                             <div className="flex-shrink-0 pt-0.5">
                               {notification.type === "warning" && (
-                                <AlertTriangle size={16} className="text-amber-500" />
+                                <AlertTriangle
+                                  size={16}
+                                  className="text-amber-500"
+                                />
                               )}
                               {notification.type === "approval" && (
                                 <User size={16} className="text-blue-500" />
@@ -367,7 +417,10 @@ const PlatformDashboard = () => {
                                 <Bell size={16} className="text-red-500" />
                               )}
                               {notification.type === "system" && (
-                                <AlertTriangle size={16} className="text-gray-500" />
+                                <AlertTriangle
+                                  size={16}
+                                  className="text-gray-500"
+                                />
                               )}
                               {notification.type === "success" && (
                                 <Bell size={16} className="text-green-500" />

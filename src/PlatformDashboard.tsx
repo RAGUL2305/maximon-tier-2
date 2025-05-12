@@ -44,30 +44,12 @@ const notifications = [
 ];
 
 const sidebarItems = [
-  {
-    icon: <FileText size={20} />,
-    label: "Studio",
-  },
-  {
-    icon: <Brain size={20} />,
-    label: "Loom",
-  },
-  {
-    icon: <GitBranch size={20} />,
-    label: "Flow",
-  },
-  {
-    icon: <LineChart size={20} />,
-    label: "Core",
-  },
-  {
-    icon: <Radio size={20} />,
-    label: "Scope",
-  },
-  {
-    icon: <Code size={20} />,
-    label: "SDK",
-  },
+  { icon: <FileText size={20} />, label: "Studio" },
+  { icon: <Brain size={20} />, label: "Loom" },
+  { icon: <GitBranch size={20} />, label: "Flow" },
+  { icon: <LineChart size={20} />, label: "Core" },
+  { icon: <Radio size={20} />, label: "Scope" },
+  { icon: <Code size={20} />, label: "SDK" },
 ];
 
 const subMenus: Record<string, { title: string; path: string }[]> = {
@@ -146,7 +128,6 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
   ],
 };
 
-// Mock system health data
 const systemHealth = {
   apiUptime: "99.98%",
   lastSyncStatus: "Completed 24 min ago",
@@ -157,7 +138,7 @@ const PlatformDashboard = () => {
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeItem, setActiveItem] = useState("Dashboard");
+  const [activeItem, setActiveItem] = useState<string | null>("Dashboard");
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -197,7 +178,9 @@ const PlatformDashboard = () => {
               <li key={index}>
                 <button
                   onClick={() => {
-                    setActiveItem(item.label);
+                    setActiveItem((prev) =>
+                      prev === item.label ? null : item.label
+                    );
                   }}
                   className={`flex items-center w-full px-4 py-3 text-left ${
                     activeItem === item.label
@@ -257,7 +240,7 @@ const PlatformDashboard = () => {
             </h1>
 
             <div className="flex items-center space-x-4">
-              {/* Tier 2: Global search */}
+              {/* Search */}
               <div className="relative hidden md:block">
                 <input
                   type="text"
@@ -283,7 +266,6 @@ const PlatformDashboard = () => {
                   </span>
                 </button>
 
-                {/* Notifications Panel */}
                 {showNotifications && (
                   <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20">
                     <div className="p-3 border-b flex justify-between items-center">
@@ -334,16 +316,13 @@ const PlatformDashboard = () => {
                         </div>
                       ))}
                     </div>
-                    {/* Tier 2: Filter controls */}
                     <div className="p-2 border-t flex justify-between items-center bg-gray-50">
-                      <div className="text-xs">
-                        <select className="text-xs border p-1 rounded">
-                          <option>All Modules</option>
-                          <option>Signal Studio</option>
-                          <option>Memory Loom</option>
-                          <option>Signal Flow</option>
-                        </select>
-                      </div>
+                      <select className="text-xs border p-1 rounded">
+                        <option>All Modules</option>
+                        <option>Signal Studio</option>
+                        <option>Memory Loom</option>
+                        <option>Signal Flow</option>
+                      </select>
                       <button className="text-xs text-blue-600">
                         Settings
                       </button>
@@ -355,7 +334,7 @@ const PlatformDashboard = () => {
           </div>
         </header>
 
-        {/* Tier 2: System alert banner */}
+        {/* System Alert */}
         <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 flex items-center justify-between">
           <div className="flex items-center">
             <AlertTriangle size={18} className="text-amber-500 mr-2" />
@@ -366,7 +345,7 @@ const PlatformDashboard = () => {
           <button className="text-xs text-amber-700">Dismiss</button>
         </div>
 
-        {/* Main dashboard content */}
+        {/* Main Content */}
         <div>
           <Outlet />
         </div>

@@ -434,10 +434,16 @@ const SignalStudioDashboard = () => {
 
                 {/* Brand Governance Alert */}
                 <div className="bg-white rounded-lg shadow mb-6">
-                  <div className="px-6 py-4 border-b border-gray-200">
+                  <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
                     <h2 className="font-semibold text-gray-800">
                       Brand Voice Governance
                     </h2>
+                    <button
+                      className="text-sm text-blue-600 hover:text-blue-800"
+                      onClick={() => navigate("/dashboard/studio/governence")}
+                    >
+                      View
+                    </button>
                   </div>
                   <div className="p-6">
                     <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
@@ -493,7 +499,10 @@ const SignalStudioDashboard = () => {
                     <p className="mt-4 text-sm text-gray-600">
                       Content is currently within acceptable drift parameters.
                     </p>
-                    <button className="mt-4 text-sm text-blue-600 hover:text-blue-800">
+                    <button
+                      className="mt-4 text-sm text-blue-600 hover:text-blue-800"
+                      onClick={() => navigate("/dashboard/studio/drift")}
+                    >
                       View Drift Dashboard
                     </button>
                   </div>

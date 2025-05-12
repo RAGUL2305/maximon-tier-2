@@ -8,12 +8,19 @@ import {
   Settings,
   Shield,
   Save,
-  Eye,
   EyeOff,
 } from "lucide-react";
 
+type Rules = {
+  id: number;
+  name: string;
+  status: string;
+  description: string;
+  enforcementLevel: string;
+};
+
 export default function BrandVoiceGovernanceConfig() {
-  const [rules, setRules] = useState([
+  const [rules, setRules] = useState<Rules[]>([
     {
       id: 1,
       name: "Formal Tone",
@@ -44,8 +51,8 @@ export default function BrandVoiceGovernanceConfig() {
     },
   ]);
 
-  const [selectedRule, setSelectedRule] = useState(null);
-  const [complianceLog, setComplianceLog] = useState([
+  const [selectedRule, setSelectedRule] = useState<Rules | null>(null);
+  const [complianceLog] = useState([
     {
       id: 1,
       draft: "Summer Campaign Email",
@@ -90,7 +97,7 @@ export default function BrandVoiceGovernanceConfig() {
     }
   };
 
-  const handleStatusChange = (id) => {
+  const handleStatusChange = (id: number) => {
     setRules(
       rules.map((rule) =>
         rule.id === id
@@ -103,7 +110,7 @@ export default function BrandVoiceGovernanceConfig() {
     );
   };
 
-  const handleRuleEdit = (rule) => {
+  const handleRuleEdit = (rule: Rules) => {
     setSelectedRule(rule);
   };
 

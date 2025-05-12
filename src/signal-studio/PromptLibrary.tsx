@@ -1,7 +1,16 @@
 import { useEffect, useState } from "react";
 
+type Prompts = {
+  id: number;
+  title: string;
+  description: string;
+  template: string;
+  tags: string[];
+  lastUsed: string;
+};
+
 function PromptLibrary() {
-  const [prompts, setPrompts] = useState([
+  const [prompts, setPrompts] = useState<Prompts[]>([
     {
       id: 1,
       title: "Product Launch Email",
@@ -52,7 +61,7 @@ function PromptLibrary() {
   const [filteredPrompts, setFilteredPrompts] = useState(prompts);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
-  const [expandedPromptId, setExpandedPromptId] = useState(null);
+  const [expandedPromptId, setExpandedPromptId] = useState<number | null>(null);
   const [isAddingPrompt, setIsAddingPrompt] = useState(false);
   const [newPrompt, setNewPrompt] = useState({
     title: "",
@@ -102,13 +111,13 @@ function PromptLibrary() {
     setFilteredPrompts(filtered);
   }, [searchTerm, selectedTags, prompts]);
 
-  function handleTagToggle(tag) {
-    setSelectedTags((prev) =>
+  function handleTagToggle(tag: string) {
+    setSelectedTags((prev: string[]) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   }
 
-  function togglePromptExpansion(id) {
+  function togglePromptExpansion(id: number) {
     setExpandedPromptId(expandedPromptId === id ? null : id);
   }
 

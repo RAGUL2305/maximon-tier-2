@@ -10,9 +10,20 @@ import {
   Server,
 } from "lucide-react";
 
-const APIErrorLog = () => {
+const ApiErrorLog = () => {
+  // Define the error type
+  type ErrorType = {
+    id: string;
+    timestamp: string;
+    endpoint: string;
+    errorCode: string;
+    message: string;
+    module: string;
+    severity: string;
+  };
+
   // Mock data for API errors
-  const [errors] = useState([
+  const [errors] = useState<ErrorType[]>([
     {
       id: "err-001",
       timestamp: "2025-05-10T08:23:45Z",
@@ -60,12 +71,13 @@ const APIErrorLog = () => {
     },
   ]);
 
+  
   // State for filters
   const [search, setSearch] = useState("");
   const [filterCode, setFilterCode] = useState("");
   const [sortBy, setSortBy] = useState("timestamp");
   const [sortOrder, setSortOrder] = useState("desc");
-  const [selectedError, setSelectedError] = useState(null);
+  const [selectedError, setSelectedError] = useState<ErrorType | null>(null);
 
   // Filtered errors based on search and filters
   const filteredErrors = errors.filter((error) => {
@@ -139,7 +151,7 @@ const APIErrorLog = () => {
   };
 
   // Handle error selection
-  const handleErrorSelect = (error) => {
+  const handleErrorSelect = (error: ErrorType) => {
     setSelectedError(selectedError?.id === error.id ? null : error);
   };
 
@@ -294,7 +306,7 @@ const APIErrorLog = () => {
                   </tr>
                   {selectedError?.id === error.id && (
                     <tr className="bg-blue-50">
-                      <td colSpan="5" className="px-6 py-4">
+                      <td colSpan={5} className="px-6 py-4">
                         <div className="text-sm text-gray-800">
                           <h4 className="font-semibold mb-2">Error Details</h4>
                           <div className="bg-white p-3 rounded border border-gray-200">
@@ -340,7 +352,7 @@ const APIErrorLog = () => {
             ) : (
               <tr>
                 <td
-                  colSpan="5"
+                  colSpan={5}
                   className="px-6 py-4 text-center text-sm text-gray-500"
                 >
                   No errors found matching your filters.
@@ -391,4 +403,4 @@ const APIErrorLog = () => {
   );
 };
 
-export default APIErrorLog;
+export default ApiErrorLog;

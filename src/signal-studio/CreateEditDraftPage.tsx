@@ -7,23 +7,36 @@ import {
   X,
   Zap,
   BookOpen,
-  BarChart2,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+type Version = {
+  id: number;
+  timestamp: string;
+  user: string;
+  summary: string;
+};
+
 const CreateEditDraftPage = () => {
-  const [draftTitle, setDraftTitle] = useState("");
-  const [prompt, setPrompt] = useState("");
-  const [toneSelection, setToneSelection] = useState("professional");
-  const [aiOutput, setAiOutput] = useState("");
+  const [draftTitle, setDraftTitle] = useState<string>("");
+  const [prompt, setPrompt] = useState<string>("");
+  const [toneSelection, setToneSelection] = useState<string>("professional");
+  const [aiOutput, setAiOutput] = useState<string>("");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [toneScore, setToneScore] = useState(null);
-  const [driftScore, setDriftScore] = useState(null);
-  const [brandGuidelines, setBrandGuidelines] = useState([]);
-  const [governanceWarnings, setGovernanceWarnings] = useState([]);
+  const [toneScore, setToneScore] = useState<number | null>(null);
+  const [driftScore, setDriftScore] = useState<number | null>(null);
+  const [brandGuidelines, setBrandGuidelines] = useState<string[]>([]);
+  type GovernanceWarning = {
+    severity: string;
+    message: string;
+  };
+
+  const [governanceWarnings, setGovernanceWarnings] = useState<
+    GovernanceWarning[]
+  >([]);
   const [showMemoryDrawer, setShowMemoryDrawer] = useState(false);
   const [showVersionHistory, setShowVersionHistory] = useState(false);
-  const [versions, setVersions] = useState([]);
+  const [versions, setVersions] = useState<Version[]>([]);
   const navigate = useNavigate();
 
   // Mock brand guidelines data
@@ -94,7 +107,7 @@ const CreateEditDraftPage = () => {
   const handleSaveDraft = () => {
     // In a real implementation, this would save to backend
     alert("Draft saved successfully!");
-    navigate("/dashboard/studio/listview")
+    navigate("/dashboard/studio/listview");
   };
 
   return (

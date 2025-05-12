@@ -10,7 +10,6 @@ import {
   FileText,
   BarChart2,
   History,
-  Settings,
 } from "lucide-react";
 
 const DraftDetailView = () => {
@@ -22,7 +21,7 @@ const DraftDetailView = () => {
   const [toneScore, setToneScore] = useState(87);
   const [driftScore, setDriftScore] = useState(92);
   const [showComments, setShowComments] = useState(false);
-  const [governanceWarnings, setGovernanceWarnings] = useState([
+  const [governanceWarnings] = useState([
     {
       type: "Brand Voice",
       message: "Consider using more approachable language in paragraph 2",

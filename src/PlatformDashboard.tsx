@@ -57,7 +57,6 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "Launcher", path: "/studio/launcher" },
     { title: "Edit Draft Page", path: "/studio/editor" },
     { title: "Visual Assest Studio", path: "/studio/visualasseststudio" },
-    { title: "Snippet", path: "/studio/snippet" },
     { title: "Propmt", path: "/studio/prompt" },
     { title: "Export Hub", path: "/studio/exporthub" },
     { title: "Governence", path: "/studio/governence" },
@@ -69,7 +68,7 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "Audit Trail", path: "/audittrails" },
     { title: "Brand Lexicon", path: "/brandlexicon" },
     { title: "Codex Upload", path: "/codex" },
-    { title: "Snippets", path: "/memoryzone/snippets" },
+    // { title: "Snippets", path: "/memoryzone/snippets" },
     { title: "MemoryDrawer", path: "/memorydrawer" },
     { title: "MemoryLoom Dahboard", path: "/memoryloomdashboard" },
     { title: "Object Detail", path: "/memoryobjectdetails" },
@@ -235,7 +234,7 @@ const PlatformDashboard = () => {
         {/* Header */}
         <header className="bg-white shadow-sm z-10">
           <div className="flex items-center justify-between p-4">
-            <h1 className="text-2xl font-semibold text-gray-800">
+            <h1 className="text-2xl font-semibold text-white">
               Platform Dashboard
             </h1>
 

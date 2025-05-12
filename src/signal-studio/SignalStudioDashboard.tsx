@@ -109,7 +109,7 @@ const SignalStudioDashboard = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 p-4">
+      {/* <header className="bg-white border-b border-gray-200 p-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <div className="font-bold text-xl text-blue-800">Signal Studio</div>
@@ -126,7 +126,7 @@ const SignalStudioDashboard = () => {
             </div>
           </div>
         </div>
-      </header>
+      </header> */}
 
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">

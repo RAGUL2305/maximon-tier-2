@@ -84,11 +84,16 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "Draft ListView", path: "/studio/listview" },
   ],
   Loom: [
-    { title: "Semantic Engine", path: "/memoryzone/semanticengine" },
-    { title: "Governance", path: "/memoryzone/governance" },
-    { title: "Prompts", path: "/memoryzone/prompts" },
+    { title: "Audit Trail", path: "/audittrails" },
+    { title: "Brand Lexicon", path: "/brandlexicon" },
+    { title: "Codex Upload", path: "/codex" },
     { title: "Snippets", path: "/memoryzone/snippets" },
-    { title: "Drift", path: "/memoryzone/drift" },
+    { title: "MemoryDrawer", path: "/memorydrawer" },
+    { title: "MemoryLoom Dahboard", path: "/memoryloomdashboard" },
+    { title: "Object Detail", path: "/memoryobjectdetails" },
+    { title: "Object List ", path: "/memoryobjectlist" },
+    { title: "Seasrch Console", path: "/searchconsole" },
+    { title: "Message Automizer", path: "/messageautomizer" },
   ],
   Flow: [
     { title: "Export Hub", path: "/publishzone/export" },
@@ -97,8 +102,20 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "Protocol Viewer", path: "/publishzone/protocol" },
   ],
   Core: [
-    { title: "Usage Dashboard", path: "/analytics/usagedashboard" },
-    { title: "Audit Trail", path: "/analytics/audittrail" },
+    { title: "SignalCore", path: "/analytics/SignalCore" },
+    {
+      title: "DecisionEngineDashboard",
+      path: "/analytics/DecisionEngineDashboard",
+    },
+    { title: "GrowthSignalMapper", path: "/analytics/GrowthSignalMapper" },
+    {
+      title: "PerformanceAnalyticsDashboard",
+      path: "/analytics/PerformanceAnalyticsDashboard",
+    },
+    { title: "PersonaTriggerMatrix", path: "/analytics/PersonaTriggerMatrix" },
+    { title: "SignalCoreExportHub", path: "/analytics/SignalCoreExportHub" },
+    { title: "SignalIntakeConsole", path: "/analytics/SignalIntakeConsole" },
+    { title: "SimulationStudio", path: "/analytics/SimulationStudio" },
   ],
   Scope: [
     { title: "Memory Management", path: "/admintools/memorymanageement" },

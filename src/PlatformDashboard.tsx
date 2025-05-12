@@ -2,12 +2,11 @@ import {
   AlertTriangle,
   Bookmark,
   Brain,
+  ChevronRight,
   Clock,
   Code,
   Database,
-  ExternalLink,
   FileText,
-  Filter,
   GitBranch,
   Hash,
   Home,
@@ -15,18 +14,17 @@ import {
   Lock,
   Paperclip,
   Pin,
-  PlusCircle,
+  PinOff,
   Radio,
   Search,
   Server,
   Settings,
   Shield,
-  Star,
   User,
   Users,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import NotificationsPanel from "./admin-tools/NotificationPannel";
 
@@ -204,109 +202,137 @@ const systemHealth = {
   warningMessage: "System Maintenance at 2 AM",
 };
 
-const memoryItems = [
-  {
-    id: "mem1",
-    title: "Q2 Campaign Headline",
-    type: "snippet",
-    lastUsed: "3h ago",
-    toneScore: 87,
-    tags: ["headline", "promotion"],
-  },
-  {
-    id: "mem2",
-    title: "Product Feature Description",
-    type: "snippet",
-    lastUsed: "Yesterday",
-    toneScore: 82,
-    tags: ["product", "features"],
-  },
-  {
-    id: "mem3",
-    title: "Customer Pain Points",
-    type: "prompt",
-    lastUsed: "2d ago",
-    toneScore: 88,
-    tags: ["research", "customer"],
-  },
-  {
-    id: "mem4",
-    title: "Brand Voice Guidelines",
-    type: "asset",
-    lastUsed: "1w ago",
-    toneScore: 90,
-    tags: ["brand", "tone"],
-  },
-  {
-    id: "mem5",
-    title: "Email Signature Generator",
-    type: "prompt",
-    lastUsed: "3d ago",
-    toneScore: 85,
-    tags: ["email", "signature"],
-  },
-  {
-    id: "mem6",
-    title: "Social Media CTA Examples",
-    type: "snippet",
-    lastUsed: "6h ago",
-    toneScore: 89,
-    tags: ["social", "cta"],
-  },
-  {
-    id: "mem7",
-    title: "Compliance Checklist",
-    type: "asset",
-    lastUsed: "4d ago",
-    toneScore: 94,
-    tags: ["legal", "compliance"],
-  },
-  {
-    id: "mem8",
-    title: "Customer Testimonial Template",
-    type: "snippet",
-    lastUsed: "5d ago",
-    toneScore: 86,
-    tags: ["testimonial", "customer"],
-  },
-];
-
 const PlatformDashboard = () => {
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("recent");
-  const [pinnedItems, setPinnedItems] = useState([
-    {
-      id: "pin1",
-      title: "Welcome Email Template",
-      type: "snippet",
-      lastUsed: "2d ago",
-      toneScore: 92,
-      tags: ["email", "onboarding"],
-    },
-    {
-      id: "pin2",
-      title: "Legal Disclaimer v2",
-      type: "snippet",
-      lastUsed: "5d ago",
-      toneScore: 95,
-      tags: ["legal", "compliance"],
-    },
-  ]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeItem, setActiveItem] = useState<string | null>("Dashboard");
   const [showAdminMenu, setShowAdminMenu] = useState(false);
+  const [memoryObjects, setMemoryObjects] = useState<any>([]);
+  const [pinnedItems, setPinnedItems] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Mock data for demonstration purposes
+  useEffect(() => {
+    // In a real implementation, this would fetch from Memory Loom API
+    setTimeout(() => {
+      setMemoryObjects([
+        {
+          id: "1",
+          title: "Brand Voice Guidelines",
+          type: "document",
+          content:
+            "Our brand voice is professional yet approachable, using simple language to explain complex concepts.",
+          confidence: 0.95,
+          lastAccessed: "2 hours ago",
+          isPinned: true,
+        },
+        {
+          id: "2",
+          title: "Product Launch Messaging",
+          type: "snippet",
+          content:
+            "Our new platform simplifies workflow automation while maintaining enterprise-grade security.",
+          confidence: 0.88,
+          lastAccessed: "1 day ago",
+          isPinned: true,
+        },
+        {
+          id: "3",
+          title: "Target Audience Personas",
+          type: "document",
+          content:
+            "Primary persona: Technical Decision Makers aged 35-55 with budget authority.",
+          confidence: 0.92,
+          lastAccessed: "3 days ago",
+          isPinned: false,
+        },
+        {
+          id: "4",
+          title: "Competitive Positioning",
+          type: "document",
+          content:
+            "We differentiate through our integrated approach to knowledge and workflow management.",
+          confidence: 0.85,
+          lastAccessed: "5 days ago",
+          isPinned: false,
+        },
+        {
+          id: "5",
+          title: "Feature Terminology",
+          type: "lexicon",
+          content:
+            'Use "Signal Intelligence" not "AI Insights" when referring to automated pattern detection.',
+          confidence: 0.97,
+          lastAccessed: "2 days ago",
+          isPinned: false,
+        },
+      ]);
+      setPinnedItems([
+        {
+          id: "1",
+          title: "Brand Voice Guidelines",
+          type: "document",
+          content:
+            "Our brand voice is professional yet approachable, using simple language to explain complex concepts.",
+          confidence: 0.95,
+          lastAccessed: "2 hours ago",
+        },
+        {
+          id: "2",
+          title: "Product Launch Messaging",
+          type: "snippet",
+          content:
+            "Our new platform simplifies workflow automation while maintaining enterprise-grade security.",
+          confidence: 0.88,
+          lastAccessed: "1 day ago",
+        },
+      ]);
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  const togglePin = (id: any) => {
+    const updatedObjects = memoryObjects.map(
+      (obj: { id: any; isPinned: any }) => {
+        if (obj.id === id) {
+          const newPinned = !obj.isPinned;
+
+          // Update pinned items list
+          if (newPinned) {
+            setPinnedItems([...pinnedItems, obj]);
+          } else {
+            setPinnedItems(
+              pinnedItems.filter((item: { id: any }) => item.id !== id)
+            );
+          }
+
+          return { ...obj, isPinned: newPinned };
+        }
+        return obj;
+      }
+    );
+
+    setMemoryObjects(updatedObjects);
+  };
+
+  const filteredMemory = memoryObjects.filter(
+    (obj: { title: string; content: string }) =>
+      obj.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      obj.content.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const displayItems =
+    activeTab === "pinned"
+      ? pinnedItems
+      : activeTab === "recent"
+      ? filteredMemory.sort(
+          (a: { lastAccessed: string }, b: { lastAccessed: any }) =>
+            a.lastAccessed.localeCompare(b.lastAccessed)
+        )
+      : filteredMemory;
   // Filter items based on search query
-  const filteredItems = searchQuery
-    ? memoryItems.filter(
-        (item) =>
-          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.tags.some((tag) =>
-            tag.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-      )
-    : memoryItems;
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -325,334 +351,143 @@ const PlatformDashboard = () => {
     }
   };
 
-  const handlePinItem = (item: {
-    id: string;
-    title?: string;
-    type?: string;
-    lastUsed?: string;
-    toneScore?: number;
-    tags?: string[];
-  }) => {
-    // Check if already pinned
-    const isPinned = pinnedItems.some(
-      (pinnedItem) => pinnedItem.id === item.id
-    );
-
-    if (isPinned) {
-      // Unpin
-      setPinnedItems(
-        pinnedItems.filter((pinnedItem) => pinnedItem.id !== item.id)
-      );
-    } else {
-      // Pin
-      setPinnedItems([
-        ...pinnedItems,
-        {
-          id: item.id,
-          title: item.title || "",
-          type: item.type || "",
-          lastUsed: item.lastUsed || "",
-          toneScore: item.toneScore || 0,
-          tags: item.tags || [],
-        },
-      ]);
-    }
-  };
-
-  const isItemPinned = (itemId: string) => {
-    return pinnedItems.some((item) => item.id === itemId);
-  };
-
   return (
     <div className="flex h-screen bg-gray-50">
-      <button
-        className={`fixed right-0 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-indigo-600 text-white rounded-l-md shadow-md transition hover:bg-indigo-700 z-10 ${
-          isDrawerOpen ? "hidden" : "flex"
-        }`}
-        onClick={toggleDrawer}
-        aria-label="Open Memory Drawer"
-      >
-        <Brain className="w-6 h-6" />
-      </button>
       {/* Semantic Memory Drawer */}
-      <div
-        className={`fixed top-0 right-0 h-full w-96 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-20 ${
-          isDrawerOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex flex-col h-full">
-          {/* Drawer Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <div className="flex items-center">
-              <Brain className="w-5 h-5 text-indigo-600 mr-2" />
-              <h2 className="text-lg font-medium text-gray-800">
-                Memory Drawer
-              </h2>
-            </div>
+      <div className="fixed right-0 top-24 h-screen z-50 flex">
+        {/* Drawer tab */}
+        <button
+          className={`fixed right-0 top-1/2 transform -translate-y-1/2 flex items-center justify-center h-12 w-12 bg-indigo-600 text-white rounded-l-md shadow-md transition hover:bg-indigo-700 z-10 ${
+            isDrawerOpen ? "hidden" : "flex"
+          }`}
+          onClick={toggleDrawer}
+          aria-label="Open Memory Drawer"
+        >
+          <Brain className="w-6 h-6" />
+        </button>
+
+        {/* Main drawer */}
+        <div
+          className={`bg-white border-l border-gray-200 shadow-lg transition-all duration-300 flex flex-col ${
+            isDrawerOpen ? "w-80" : "w-0 overflow-hidden"
+          }`}
+        >
+          <div className="flex justify-between items-center p-4 border-b border-gray-200">
+            <h3 className="font-bold text-lg text-blue-700">Memory Drawer</h3>
             <button
+              onClick={() => setIsDrawerOpen(false)}
               className="text-gray-500 hover:text-gray-700"
-              onClick={toggleDrawer}
-              aria-label="Close Memory Drawer"
             >
-              <X className="w-5 h-5" />
+              <X className="h-5 w-5" />
             </button>
           </div>
 
-          {/* Search Bar */}
-          <div className="p-4 border-b border-gray-200">
+          {/* Search */}
+          <div className="p-3 border-b border-gray-200">
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search snippets, prompts, assets..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Search memory..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
             </div>
-
-            {/* Natural Language Prompt Examples */}
-            {!searchQuery && (
-              <div className="mt-2 flex flex-wrap gap-2">
-                <button className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md hover:bg-gray-200">
-                  Find last quarter's welcome email intro
-                </button>
-                <button className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md hover:bg-gray-200">
-                  Show legal disclaimers
-                </button>
-              </div>
-            )}
           </div>
 
-          {/* Navigation Tabs */}
+          {/* Tabs */}
           <div className="flex border-b border-gray-200">
             <button
-              className={`flex-1 py-3 text-sm font-medium text-center ${
+              className={`flex-1 py-2 px-4 text-sm font-medium ${
                 activeTab === "recent"
-                  ? "text-indigo-600 border-b-2 border-indigo-600"
-                  : "text-gray-500 hover:text-gray-700"
+                  ? "text-blue-600 border-b-2 border-blue-600"
+                  : "text-gray-500"
               }`}
               onClick={() => setActiveTab("recent")}
             >
               <div className="flex items-center justify-center">
-                <Clock className="w-4 h-4 mr-1.5" />
+                <Clock className="h-4 w-4 mr-1" />
                 Recent
               </div>
             </button>
             <button
-              className={`flex-1 py-3 text-sm font-medium text-center ${
+              className={`flex-1 py-2 px-4 text-sm font-medium ${
                 activeTab === "pinned"
-                  ? "text-indigo-600 border-b-2 border-indigo-600"
-                  : "text-gray-500 hover:text-gray-700"
+                  ? "text-blue-600 border-b-2 border-blue-600"
+                  : "text-gray-500"
               }`}
               onClick={() => setActiveTab("pinned")}
             >
               <div className="flex items-center justify-center">
-                <Pin className="w-4 h-4 mr-1.5" />
+                <Pin className="h-4 w-4 mr-1" />
                 Pinned
               </div>
             </button>
-            <button
-              className={`flex-1 py-3 text-sm font-medium text-center ${
-                activeTab === "all"
-                  ? "text-indigo-600 border-b-2 border-indigo-600"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-              onClick={() => setActiveTab("all")}
-            >
-              <div className="flex items-center justify-center">
-                <Filter className="w-4 h-4 mr-1.5" />
-                All Memory
-              </div>
-            </button>
           </div>
 
-          {/* Memory Content */}
-          <div className="flex-grow overflow-y-auto p-4">
-            {activeTab === "pinned" && (
-              <>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium text-gray-700">
-                    Pinned Items
-                  </h3>
-                  <span className="text-xs text-gray-500">
-                    {pinnedItems.length} items
-                  </span>
-                </div>
-
-                {pinnedItems.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <Pin className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                    <p>No pinned items yet</p>
-                    <p className="text-sm mt-1">
-                      Pin frequently used items for quick access
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {pinnedItems.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-start p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer group"
-                      >
-                        <div className="flex-shrink-0 mt-0.5">
-                          {getTypeIcon(item.type)}
-                        </div>
-                        <div className="ml-3 flex-grow min-w-0">
-                          <div className="flex items-center justify-between">
-                            <h4 className="text-sm font-medium text-gray-900 truncate">
-                              {item.title}
-                            </h4>
-                            <button
-                              className="text-yellow-500 hover:text-yellow-600"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handlePinItem(item);
-                              }}
-                            >
-                              <Star className="w-4 h-4 fill-current" />
-                            </button>
-                          </div>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Last used: {item.lastUsed} • Tone: {item.toneScore}
-                            /100
-                          </p>
-                          <div className="mt-1.5 flex flex-wrap gap-1">
-                            {item.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded"
-                              >
-                                #{tag}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
+          {/* Memory items */}
+          <div className="flex-1 overflow-y-auto p-2">
+            {isLoading ? (
+              <div className="flex justify-center items-center h-full">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
+              </div>
+            ) : displayItems.length > 0 ? (
+              displayItems.map((item: any) => (
+                <div
+                  key={item.id}
+                  className="mb-2 border border-gray-200 rounded-md p-3 hover:bg-gray-50 cursor-pointer"
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-start space-x-2">
+                      {getTypeIcon(item.type)}
+                      <div>
+                        <h4 className="font-medium text-sm">{item.title}</h4>
+                        <p className="text-xs text-gray-500">
+                          {item.type} • Last accessed: {item.lastAccessed}
+                        </p>
                       </div>
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
-
-            {(activeTab === "recent" || activeTab === "all" || searchQuery) && (
-              <>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-medium text-gray-700">
-                    {searchQuery
-                      ? "Search Results"
-                      : activeTab === "recent"
-                      ? "Recently Used"
-                      : "All Memory Items"}
-                  </h3>
-                  <span className="text-xs text-gray-500">
-                    {filteredItems.length} items
-                  </span>
-                </div>
-
-                {filteredItems.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <Search className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                    <p>No items found</p>
-                    <p className="text-sm mt-1">
-                      Try different search terms or filters
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {(activeTab === "recent"
-                      ? filteredItems.slice(0, 5)
-                      : filteredItems
-                    ).map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-start p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer group"
-                      >
-                        <div className="flex-shrink-0 mt-0.5">
-                          {getTypeIcon(item.type)}
-                        </div>
-                        <div className="ml-3 flex-grow min-w-0">
-                          <div className="flex items-center justify-between">
-                            <h4 className="text-sm font-medium text-gray-900 truncate">
-                              {item.title}
-                            </h4>
-                            <button
-                              className={`${
-                                isItemPinned(item.id)
-                                  ? "text-yellow-500"
-                                  : "text-gray-400 opacity-0 group-hover:opacity-100"
-                              } hover:text-yellow-600`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handlePinItem(item);
-                              }}
-                            >
-                              <Star
-                                className={`w-4 h-4 ${
-                                  isItemPinned(item.id) ? "fill-current" : ""
-                                }`}
-                              />
-                            </button>
-                          </div>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Last used: {item.lastUsed} • Tone: {item.toneScore}
-                            /100
-                          </p>
-                          <div className="mt-1.5 flex flex-wrap gap-1">
-                            {item.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded"
-                              >
-                                #{tag}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {activeTab === "recent" &&
-                  filteredItems.length > 5 &&
-                  !searchQuery && (
-                    <div className="mt-4 text-center">
-                      <button
-                        className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
-                        onClick={() => setActiveTab("all")}
-                      >
-                        View all {filteredItems.length} items
-                      </button>
                     </div>
-                  )}
-              </>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        togglePin(item.id);
+                      }}
+                      className="text-gray-400 hover:text-blue-600"
+                    >
+                      {item.isPinned ? (
+                        <PinOff className="h-4 w-4" />
+                      ) : (
+                        <Pin className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                  <div className="mt-2 text-sm text-gray-700 border-l-2 border-gray-200 pl-2">
+                    {item.content}
+                  </div>
+                  <div className="mt-2 flex justify-between items-center">
+                    <div className="text-xs text-gray-500">
+                      Confidence: {(item.confidence * 100).toFixed(0)}%
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-gray-400" />
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                No memory items found
+              </div>
             )}
           </div>
 
-          {/* Drawer Footer */}
-          <div className="border-t border-gray-200 p-4">
-            <div className="grid grid-cols-2 gap-3">
-              <button className="flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium text-gray-700">
-                <PlusCircle className="w-4 h-4 mr-1.5" />
-                Create Snippet
-              </button>
-              <button className="flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium text-gray-700">
-                <ExternalLink className="w-4 h-4 mr-1.5" />
-                Memory Zone
-              </button>
-            </div>
-
-            {/* AI Suggestions */}
-            <div className="mt-4 border-t border-gray-200 pt-3">
-              <div className="text-xs text-gray-500 mb-2">AI Suggestions</div>
-              <div className="text-sm text-gray-700">
-                You've reused this asset 4 times—want to refresh it?
-              </div>
-            </div>
+          {/* Footer */}
+          <div className="border-t border-gray-200 p-3 text-xs text-gray-500 flex justify-between">
+            <span>Memory Loom Integration</span>
+            <span className="text-blue-600">View in Memory Loom →</span>
           </div>
         </div>
       </div>
+
       {/* Sidebar */}
       <div className="w-16 md:w-64 bg-gray-800 text-white flex flex-col">
         <div className="p-4 flex items-center justify-center md:justify-start">

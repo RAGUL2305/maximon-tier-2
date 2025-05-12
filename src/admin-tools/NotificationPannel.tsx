@@ -6,6 +6,7 @@ import {
   Settings,
   Filter,
   ChevronDown,
+  Bell,
 } from "lucide-react";
 
 // Sample notification data
@@ -75,7 +76,7 @@ const NotificationsPanel = () => {
 
   const togglePanel = () => setIsOpen(!isOpen);
 
-  const markAsRead = (id) => {
+  const markAsRead = (id: number) => {
     setNotifications(
       notifications.map((notification) =>
         notification.id === id ? { ...notification, read: true } : notification
@@ -83,7 +84,7 @@ const NotificationsPanel = () => {
     );
   };
 
-  const deleteNotification = (id) => {
+  const deleteNotification = (id: number) => {
     setNotifications(
       notifications.filter((notification) => notification.id !== id)
     );
@@ -112,7 +113,7 @@ const NotificationsPanel = () => {
   const filteredNotifications = getFilteredNotifications();
 
   // UI helpers for notification type styling
-  const getTypeIcon = (type) => {
+  const getTypeIcon = (type: string) => {
     switch (type) {
       case "info":
         return (
@@ -148,10 +149,11 @@ const NotificationsPanel = () => {
       {/* Notification Bell with Unread Count Badge */}
       <button
         onClick={togglePanel}
-        className="relative p-2 rounded-full hover:bg-gray-100 focus:outline-none"
+        className="relative p-2 rounded-full"
         aria-label="Notifications"
       >
-        <BellRing size={24} className="text-gray-700" />
+        <Bell size={20} className="text-white" />
+
         {unreadCount > 0 && (
           <span className="absolute top-0 right-0 h-5 w-5 text-xs flex items-center justify-center bg-red-500 text-white rounded-full">
             {unreadCount}

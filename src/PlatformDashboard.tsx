@@ -21,6 +21,7 @@ import {
   Mail,
 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
+import NotificationsPanel from "./admin-tools/NotificationPannel";
 
 // Mock data for notifications
 const notifications = [
@@ -378,79 +379,7 @@ const PlatformDashboard = () => {
 
               {/* Notifications */}
               <div className="relative">
-                <button
-                  className="p-2 rounded-full hover:bg-gray-700 relative"
-                  onClick={() => setShowNotifications(!showNotifications)}
-                >
-                  <Bell size={20} className="text-white" />
-                  <span className="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-                    5
-                  </span>
-                </button>
-
-                {showNotifications && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20">
-                    <div className="p-3 border-b flex justify-between items-center">
-                      <h3 className="font-medium">Notifications</h3>
-                      <button className="text-xs text-blue-600">
-                        Mark all as read
-                      </button>
-                    </div>
-                    <div className="max-h-96 overflow-y-auto">
-                      {notifications.map((notification) => (
-                        <div
-                          key={notification.id}
-                          className="p-3 border-b hover:bg-gray-50 cursor-pointer"
-                        >
-                          <div className="flex items-start">
-                            <div className="flex-shrink-0 pt-0.5">
-                              {notification.type === "warning" && (
-                                <AlertTriangle
-                                  size={16}
-                                  className="text-amber-500"
-                                />
-                              )}
-                              {notification.type === "approval" && (
-                                <User size={16} className="text-blue-500" />
-                              )}
-                              {notification.type === "alert" && (
-                                <Bell size={16} className="text-red-500" />
-                              )}
-                              {notification.type === "system" && (
-                                <AlertTriangle
-                                  size={16}
-                                  className="text-gray-500"
-                                />
-                              )}
-                              {notification.type === "success" && (
-                                <Bell size={16} className="text-green-500" />
-                              )}
-                            </div>
-                            <div className="ml-3 flex-1">
-                              <p className="text-sm text-gray-800">
-                                {notification.message}
-                              </p>
-                              <p className="text-xs text-gray-500 mt-1">
-                                Just now
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="p-2 border-t flex justify-between items-center bg-gray-50">
-                      <select className="text-xs border p-1 rounded">
-                        <option>All Modules</option>
-                        <option>Signal Studio</option>
-                        <option>Memory Loom</option>
-                        <option>Signal Flow</option>
-                      </select>
-                      <button className="text-xs text-blue-600">
-                        Settings
-                      </button>
-                    </div>
-                  </div>
-                )}
+                <NotificationsPanel />
               </div>
             </div>
           </div>

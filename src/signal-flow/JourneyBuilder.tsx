@@ -1,11 +1,13 @@
 import { AlertTriangle, Check, Info, PlusCircle, Save, Settings, X } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const JourneyBuilder = () => {
   const [journeyName, setJourneyName] = useState('New Customer Onboarding');
   const [journeyDescription, setJourneyDescription] = useState('Welcome journey for new customers with personalized touchpoints');
   const [isGovernanceCompliant, setIsGovernanceCompliant] = useState(true);
   const [nodeCount, setNodeCount] = useState(3);
+  const navigate = useNavigate();
 
   // Sample journey triggers
   const [triggers, setTriggers] = useState([
@@ -147,7 +149,9 @@ const JourneyBuilder = () => {
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700">
+              <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700"
+              onClick={()=> navigate ("/dashboard/journeyvalidator")}
+              >
                 <Settings size={16} className="mr-1" /> Validator
               </button>
             </div>

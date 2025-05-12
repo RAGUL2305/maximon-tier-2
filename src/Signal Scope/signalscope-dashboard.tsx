@@ -68,9 +68,9 @@ const SignalScope = () => {
             <p className="text-sm text-gray-500">Marketing Intelligence Engine</p>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200">
+            {/* <button className="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200">
               <Bell size={20} />
-            </button>
+            </button> */}
             <div className="relative">
               <input 
                 type="text" 
@@ -79,9 +79,9 @@ const SignalScope = () => {
               />
               <Search className="absolute left-2 top-2.5 text-gray-400" size={16} />
             </div>
-            <div className="h-8 w-8 rounded-full bg-blue-600 text-white flex items-center justify-center">
+            {/* <div className="h-8 w-8 rounded-full bg-blue-600 text-white flex items-center justify-center">
               US
-            </div>
+            </div> */}
           </div>
         </div>
         

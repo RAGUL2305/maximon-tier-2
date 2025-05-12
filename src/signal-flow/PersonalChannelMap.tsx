@@ -1,383 +1,245 @@
 import { useState } from 'react';
-import { AlertCircle, CheckCircle, PlusCircle, Save, ChevronDown, Edit, Trash2, Play, Pause } from 'lucide-react';
+import { Check, Plus, Save, Trash2, Edit } from 'lucide-react';
 
-const TriggerConfigurator = () => {
-  const [triggers, setTriggers] = useState([
-    {
-      id: 1,
-      name: 'Email Opened',
-      eventSource: 'Signal Studio',
-      condition: 'User opens marketing email',
-      status: 'Active'
-    },
-    {
-      id: 2,
-      name: 'Purchase Completed',
-      eventSource: 'SignalScope',
-      condition: 'User completes purchase flow',
-      status: 'Active'
-    },
-    {
-      id: 3,
-      name: 'Cart Abandonment',
-      eventSource: 'Signal Flow',
-      condition: 'User leaves checkout with items',
-      status: 'Inactive'
-    }
+export default function PersonaChannelMap() {
+  // Sample personas and channels
+  const [personas, setPersonas] = useState([
+    { id: 1, name: 'Decision Makers', description: 'C-level executives with purchasing authority', isEditing: false },
+    { id: 2, name: 'Technical Evaluators', description: 'IT professionals evaluating solutions', isEditing: false },
+    { id: 3, name: 'End Users', description: 'Daily users of the product', isEditing: false }
   ]);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [currentTrigger, setCurrentTrigger] = useState({
-    id: null,
-    name: '',
-    eventSource: 'Signal Studio',
-    condition: '',
-    status: 'Active'
+  const [channels, setChannels] = useState([
+    { id: 1, name: 'Email', icon: '✉️' },
+    { id: 2, name: 'Social Media', icon: '📱' },
+    { id: 3, name: 'Paid Search', icon: '🔍' },
+    { id: 4, name: 'Website', icon: '🌐' },
+    { id: 5, name: 'Events', icon: '📅' }
+  ]);
+
+  // Mapping between personas and channels
+  const [mappings, setMappings] = useState({
+    1: [1, 4, 5],     // Decision Makers -> Email, Website, Events
+    2: [1, 2, 3, 4],  // Technical Evaluators -> Email, Social, Search, Website
+    3: [1, 2, 4]      // End Users -> Email, Social, Website
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const [validationError, setValidationError] = useState('');
 
-  const eventSources = ['Signal Studio', 'SignalScope', 'Signal Flow', 'CDP', 'CRM'];
+  // State for new persona form
+  const [newPersona, setNewPersona] = useState({ name: '', description: '' });
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingPersonaId, setEditingPersonaId] = useState(null);
 
-  const openModal = (trigger = null) => {
-    if (trigger) {
-      setCurrentTrigger({...trigger});
-      setIsEditing(true);
-    } else {
-      setCurrentTrigger({
-        id: triggers.length > 0 ? Math.max(...triggers.map(t => t.id)) + 1 : 1,
-        name: '',
-        eventSource: 'Signal Studio',
-        condition: '',
-        status: 'Active'
-      });
-      setIsEditing(false);
-    }
-    setValidationError('');
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-    setValidationError('');
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCurrentTrigger(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const saveChanges = () => {
-    // Validation
-    if (!currentTrigger.name.trim()) {
-      setValidationError('Trigger name is required');
-      return;
-    }
-    
-    if (!currentTrigger.condition.trim()) {
-      setValidationError('Condition is required');
-      return;
-    }
-    
-    // Check for duplicate names
-    const isDuplicate = triggers.some(t => 
-      t.name.toLowerCase() === currentTrigger.name.toLowerCase() && 
-      t.id !== currentTrigger.id
-    );
-    
-    if (isDuplicate) {
-      setValidationError('A trigger with this name already exists');
-      return;
-    }
-
-    if (isEditing) {
-      setTriggers(prev => prev.map(t => t.id === currentTrigger.id ? currentTrigger : t));
-    } else {
-      setTriggers(prev => [...prev, currentTrigger]);
-    }
-    
-    closeModal();
-  };
-
-  const deleteTrigger = (id) => {
-    setTriggers(prev => prev.filter(t => t.id !== id));
-  };
-
-  const toggleStatus = (id) => {
-    setTriggers(prev => prev.map(t => {
-      if (t.id === id) {
-        return {
-          ...t,
-          status: t.status === 'Active' ? 'Inactive' : 'Active'
-        };
+  const toggleMapping = (personaId, channelId) => {
+    setMappings(prev => {
+      const personaMappings = [...(prev[personaId] || [])];
+      const index = personaMappings.indexOf(channelId);
+      
+      if (index === -1) {
+        personaMappings.push(channelId);
+      } else {
+        personaMappings.splice(index, 1);
       }
-      return t;
-    }));
+      
+      return { ...prev, [personaId]: personaMappings };
+    });
+  };
+
+  const addPersona = () => {
+    if (!newPersona.name) return;
+    
+    const newId = Math.max(0, ...personas.map(p => p.id)) + 1;
+    setPersonas([...personas, { id: newId, name: newPersona.name, description: newPersona.description, isEditing: false }]);
+    setMappings({ ...mappings, [newId]: [] });
+    setNewPersona({ name: '', description: '' });
+    setShowAddForm(false);
+  };
+
+  const startEditPersona = (id) => {
+    setPersonas(personas.map(p => 
+      p.id === id 
+        ? { ...p, isEditing: true } 
+        : { ...p, isEditing: false }
+    ));
+    setEditingPersonaId(id);
+  };
+
+  const saveEditPersona = (id, updatedName, updatedDesc) => {
+    setPersonas(personas.map(p => 
+      p.id === id 
+        ? { ...p, name: updatedName, description: updatedDesc, isEditing: false } 
+        : p
+    ));
+    setEditingPersonaId(null);
+  };
+
+  const deletePersona = (id) => {
+    setPersonas(personas.filter(p => p.id !== id));
+    // Remove mappings for this persona
+    const newMappings = { ...mappings };
+    delete newMappings[id];
+    setMappings(newMappings);
   };
 
   return (
-    <div className="bg-gray-50 p-6 rounded-lg shadow">
-      <div className="mb-6 flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Trigger Configurator</h1>
-          <p className="text-gray-600">Define event conditions from CDP, CRM, and behavior events</p>
-        </div>
-        <button
-          onClick={() => openModal()}
-          className="bg-blue-600 text-white py-2 px-4 rounded-md flex items-center hover:bg-blue-700 transition-colors"
+    <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Persona & Channel Map</h1>
+        <button 
+          onClick={() => setShowAddForm(!showAddForm)}
+          className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
         >
-          <PlusCircle className="mr-2 w-5 h-5" />
-          Add Trigger
+          <Plus size={16} className="mr-1" />
+          <span>Add Persona</span>
         </button>
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-4 mb-4">
-        <div className="w-48">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-          <div className="relative">
-            <select 
-              className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
-            >
-              <option value="all">All Statuses</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <ChevronDown className="w-4 h-4" />
+      {showAddForm && (
+        <div className="mb-6 p-4 border border-blue-200 rounded-md bg-blue-50">
+          <h2 className="text-lg font-semibold text-gray-700 mb-3">Add New Persona</h2>
+          <div className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <input
+                type="text"
+                value={newPersona.name}
+                onChange={(e) => setNewPersona({...newPersona, name: e.target.value})}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder="Persona name"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <textarea
+                value={newPersona.description}
+                onChange={(e) => setNewPersona({...newPersona, description: e.target.value})}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                placeholder="Describe this persona"
+                rows="2"
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <button 
+                onClick={() => setShowAddForm(false)}
+                className="px-3 py-2 border border-gray-300 rounded-md"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={addPersona}
+                className="px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                disabled={!newPersona.name}
+              >
+                Add Persona
+              </button>
             </div>
           </div>
         </div>
-        
-        <div className="w-48">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Event Source</label>
-          <div className="relative">
-            <select 
-              className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
-            >
-              <option value="all">All Sources</option>
-              {eventSources.map(source => (
-                <option key={source} value={source.toLowerCase()}>{source}</option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <ChevronDown className="w-4 h-4" />
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
 
-      {/* Triggers Table */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event Source</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Condition</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+      <div className="overflow-x-auto">
+        <table className="min-w-full">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="w-1/4 p-3 text-left font-semibold text-gray-700 border-b">Persona</th>
+              {channels.map(channel => (
+                <th key={channel.id} className="p-3 text-center font-semibold text-gray-700 border-b">
+                  <div className="flex flex-col items-center">
+                    <span className="text-xl">{channel.icon}</span>
+                    <span className="text-sm">{channel.name}</span>
+                  </div>
+                </th>
+              ))}
+              <th className="w-16 p-3 text-center font-semibold text-gray-700 border-b">Actions</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {triggers.map(trigger => (
-              <tr key={trigger.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="font-medium text-gray-900">{trigger.name}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
-                    {trigger.eventSource}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm text-gray-500">{trigger.condition}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {trigger.status === 'Active' ? (
-                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 flex items-center w-fit">
-                      <CheckCircle className="w-3 h-3 mr-1" />
-                      Active
-                    </span>
+          <tbody>
+            {personas.map(persona => (
+              <tr key={persona.id} className="border-b hover:bg-gray-50">
+                <td className="p-3">
+                  {persona.isEditing ? (
+                    <div className="space-y-2">
+                      <input
+                        type="text"
+                        defaultValue={persona.name}
+                        id={`edit-name-${persona.id}`}
+                        className="w-full p-1 border border-gray-300 rounded-md text-sm"
+                      />
+                      <textarea
+                        defaultValue={persona.description}
+                        id={`edit-desc-${persona.id}`}
+                        className="w-full p-1 border border-gray-300 rounded-md text-sm"
+                        rows="2"
+                      />
+                      <button 
+                        onClick={() => saveEditPersona(
+                          persona.id, 
+                          document.getElementById(`edit-name-${persona.id}`).value,
+                          document.getElementById(`edit-desc-${persona.id}`).value
+                        )}
+                        className="flex items-center text-sm text-green-600 hover:text-green-800"
+                      >
+                        <Save size={14} className="mr-1" />
+                        Save
+                      </button>
+                    </div>
                   ) : (
-                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800 flex items-center w-fit">
-                      <AlertCircle className="w-3 h-3 mr-1" />
-                      Inactive
-                    </span>
+                    <div>
+                      <div className="font-medium text-gray-800">{persona.name}</div>
+                      <div className="text-sm text-gray-500">{persona.description}</div>
+                    </div>
                   )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <div className="flex space-x-2">
-                    <button 
-                      onClick={() => toggleStatus(trigger.id)} 
-                      className="text-gray-600 hover:text-blue-600"
-                      title={trigger.status === 'Active' ? 'Deactivate' : 'Activate'}
-                    >
-                      {trigger.status === 'Active' ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                    </button>
-                    <button 
-                      onClick={() => openModal(trigger)} 
-                      className="text-gray-600 hover:text-blue-600"
-                      title="Edit"
-                    >
-                      <Edit className="w-5 h-5" />
-                    </button>
-                    <button 
-                      onClick={() => deleteTrigger(trigger.id)} 
-                      className="text-gray-600 hover:text-red-600"
-                      title="Delete"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
+
+                {channels.map(channel => {
+                  const isActive = mappings[persona.id]?.includes(channel.id);
+                  return (
+                    <td key={channel.id} className="p-3 text-center">
+                      <button
+                        onClick={() => toggleMapping(persona.id, channel.id)}
+                        className={`w-6 h-6 rounded ${isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}
+                      >
+                        {isActive && <Check size={16} className="mx-auto" />}
+                      </button>
+                    </td>
+                  );
+                })}
+
+                <td className="p-3">
+                  <div className="flex justify-center space-x-2">
+                    {!persona.isEditing && (
+                      <>
+                        <button 
+                          onClick={() => startEditPersona(persona.id)}
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          <Edit size={16} />
+                        </button>
+                        <button 
+                          onClick={() => deletePersona(persona.id)}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </>
+                    )}
                   </div>
                 </td>
               </tr>
             ))}
-            {triggers.length === 0 && (
-              <tr>
-                <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
-                  No triggers configured. Click "Add Trigger" to create one.
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
       </div>
 
-      {/* Bulk Actions (Tier 2 feature) */}
-      {triggers.length > 0 && (
-        <div className="mt-4 flex items-center space-x-4">
-          <span className="text-sm text-gray-500">Bulk Actions:</span>
-          <button className="text-sm text-blue-600 hover:text-blue-800">Enable Selected</button>
-          <button className="text-sm text-blue-600 hover:text-blue-800">Disable Selected</button>
-        </div>
-      )}
-
-      {/* Modal */}
-      {modalOpen && (
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity">
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-            <div 
-              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-            >
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  {isEditing ? 'Edit Trigger' : 'Create New Trigger'}
-                </h3>
-                
-                {validationError && (
-                  <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded flex items-start">
-                    <AlertCircle className="w-5 h-5 mr-2 mt-0.5" />
-                    <span>{validationError}</span>
-                  </div>
-                )}
-                
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Trigger Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={currentTrigger.name}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter trigger name"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Event Source
-                    </label>
-                    <select
-                      name="eventSource"
-                      value={currentTrigger.eventSource}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      {eventSources.map(source => (
-                        <option key={source} value={source}>{source}</option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Condition <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      name="condition"
-                      value={currentTrigger.condition}
-                      onChange={handleInputChange}
-                      rows="3"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter trigger condition"
-                    ></textarea>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Status
-                    </label>
-                    <div className="flex items-center space-x-4">
-                      <label className="inline-flex items-center">
-                        <input
-                          type="radio"
-                          name="status"
-                          value="Active"
-                          checked={currentTrigger.status === 'Active'}
-                          onChange={handleInputChange}
-                          className="form-radio h-4 w-4 text-blue-600"
-                        />
-                        <span className="ml-2 text-gray-700">Active</span>
-                      </label>
-                      <label className="inline-flex items-center">
-                        <input
-                          type="radio"
-                          name="status"
-                          value="Inactive"
-                          checked={currentTrigger.status === 'Inactive'}
-                          onChange={handleInputChange}
-                          className="form-radio h-4 w-4 text-blue-600"
-                        />
-                        <span className="ml-2 text-gray-700">Inactive</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button
-                  type="button"
-                  onClick={saveChanges}
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  <Save className="w-4 h-4 mr-2" />
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <div className="mt-6 bg-blue-50 p-4 rounded-md">
+        <h3 className="font-semibold text-gray-700 mb-2">Usage Notes:</h3>
+        <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
+          <li>Click on the checkboxes to toggle channel mapping for each persona</li>
+          <li>Add new personas using the button at the top-right</li>
+          <li>Edit persona details or delete them using the action buttons</li>
+          <li>This mapping helps tailor journeys to different audience needs</li>
+          <li>Use this information when building customer journeys in Signal Flow</li>
+        </ul>
+      </div>
     </div>
   );
-};
-
-export default TriggerConfigurator;
+}

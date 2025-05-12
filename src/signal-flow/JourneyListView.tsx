@@ -7,6 +7,7 @@ import {
   Search,
 } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const JourneyListView = () => {
   const [journeys, setJourneys] = useState([
@@ -76,6 +77,7 @@ const JourneyListView = () => {
   const [statusFilter, setStatusFilter] = useState("All");
   const [channelFilter, setChannelFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate(); 
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -151,7 +153,9 @@ const JourneyListView = () => {
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Journey List</h1>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center"
+        onClick={() => navigate("/dashboard/journeybuilder")}
+        >
           <PlusCircle size={18} className="mr-2" />
           New Journey
         </button>
@@ -296,7 +300,9 @@ const JourneyListView = () => {
                 <td className="px-3 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="ml-1">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-gray-900"
+                      onClick={() => navigate ("/dashboard/journeydetail")}
+                      >
                         {journey.name}
                       </div>
                     </div>

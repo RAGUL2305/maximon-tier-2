@@ -46,14 +46,14 @@ const SignalCore = () => {
             <div className="text-2xl font-bold text-indigo-600">SignalCore</div>
             <div className="ml-2 text-sm text-gray-500">Revenue Intelligence</div>
           </div>
-          <div className="flex items-center space-x-4">
+          {/* <div className="flex items-center space-x-4">
             <button className="p-2 text-gray-400 hover:text-gray-500">
               <Bell size={20} />
             </button>
             <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-medium">
               JD
             </div>
-          </div>
+          </div> */}
         </div>
         
         {/* Navigation */}

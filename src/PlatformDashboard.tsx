@@ -11,6 +11,15 @@ import {
   Radio,
   Code,
   AlertTriangle,
+  Settings,
+  Key,
+  Users,
+  Shield,
+  LogOut,
+  Lock,
+  Database,
+  Server,
+  Mail,
 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -68,7 +77,6 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "Audit Trail", path: "/audittrails" },
     { title: "Brand Lexicon", path: "/brandlexicon" },
     { title: "Codex Upload", path: "/codex" },
-    // { title: "Snippets", path: "/memoryzone/snippets" },
     { title: "MemoryDrawer", path: "/memorydrawer" },
     { title: "MemoryLoom Dahboard", path: "/memoryloomdashboard" },
     { title: "Object Detail", path: "/memoryobjectdetails" },
@@ -90,15 +98,9 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
   ],
   Core: [
     { title: "SignalCore", path: "/core/signal-core" },
-    {
-      title: "DecisionEngineDashboard",
-      path: "/core/decision-engine-dashboard",
-    },
+    { title: "DecisionEngineDashboard", path: "/core/decision-engine-dashboard" },
     { title: "GrowthSignalMapper", path: "/core/growth-signal-mapper" },
-    {
-      title: "PerformanceAnalyticsDashboard",
-      path: "/core/performance-analytics-dashboard",
-    },
+    { title: "PerformanceAnalyticsDashboard", path: "/core/performance-analytics-dashboard" },
     { title: "PersonaTriggerMatrix", path: "/core/persona-trigger-matrix" },
     { title: "SignalCoreExportHub", path: "/core/signal-core-exportHub" },
     { title: "SignalIntakeConsole", path: "/core/signal-intake-console" },
@@ -107,10 +109,7 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
   Scope: [
     { title: "SignalScope", path: "/scope/signal-scope" },
     { title: "DriftInsightDashboard", path: "/scope/drift-insight-dashboard" },
-    {
-      title: "EntityRecognitionConfig",
-      path: "/scope/entity-recognition-config",
-    },
+    { title: "EntityRecognitionConfig", path: "/scope/entity-recognition-config" },
     { title: "EscalationLayer", path: "/scope/escalation-layer" },
     { title: "InsightRouter", path: "/scope/insight-router" },
     { title: "MemoryLookupConsole", path: "/scope/memory-lookup-console" },
@@ -127,6 +126,56 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
   ],
 };
 
+// Admin submenu items
+const adminSubMenus = [
+  { 
+    title: "User Profile", 
+    path: "/admin/profile",
+    icon: <User size={16} className="mr-2" />
+  },
+  { 
+    title: "Account Security", 
+    path: "/admin/security",
+    icon: <Lock size={16} className="mr-2" />
+  },
+  { 
+    title: "Team Management", 
+    path: "/admin/team",
+    icon: <Users size={16} className="mr-2" />
+  },
+  { 
+    title: "Admin Console", 
+    path: "/admin/console",
+    icon: <Shield size={16} className="mr-2" />
+  },
+  { 
+    title: "System Settings", 
+    path: "/admin/settings",
+    icon: <Settings size={16} className="mr-2" />
+  },
+  { 
+    title: "Database Management", 
+    path: "/admin/database",
+    icon: <Database size={16} className="mr-2" />
+  },
+  { 
+    title: "Server Status", 
+    path: "/admin/server",
+    icon: <Server size={16} className="mr-2" />
+  },
+  { 
+    title: "Email Configuration", 
+    path: "/admin/email",
+    icon: <Mail size={16} className="mr-2" />
+  },
+  { 
+    title: "Log Out", 
+    path: "/logout",
+    icon: <LogOut size={16} className="mr-2" />,
+    className: "border-t border-gray-600 mt-2 pt-2"
+  },
+];
+
 const systemHealth = {
   apiUptime: "99.98%",
   lastSyncStatus: "Completed 24 min ago",
@@ -138,6 +187,7 @@ const PlatformDashboard = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeItem, setActiveItem] = useState<string | null>("Dashboard");
+  const [showAdminMenu, setShowAdminMenu] = useState(false);
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -159,9 +209,7 @@ const PlatformDashboard = () => {
                   navigate("/dashboard");
                 }}
                 className={`flex items-center w-full px-4 py-3 text-left ${
-                  activeItem === "Dashboard"
-                    ? "bg-gray-700"
-                    : "hover:bg-gray-700"
+                  activeItem === "Dashboard" ? "bg-gray-700" : "hover:bg-gray-700"
                 }`}
               >
                 <span className="text-gray-300">{<Home size={20} />}</span>
@@ -182,9 +230,7 @@ const PlatformDashboard = () => {
                     );
                   }}
                   className={`flex items-center w-full px-4 py-3 text-left ${
-                    activeItem === item.label
-                      ? "bg-gray-700"
-                      : "hover:bg-gray-700"
+                    activeItem === item.label ? "bg-gray-700" : "hover:bg-gray-700"
                   }`}
                 >
                   <span className="text-gray-300">{item.icon}</span>
@@ -216,23 +262,53 @@ const PlatformDashboard = () => {
           </ul>
         </nav>
 
-        <div className="p-4">
-          <div className="flex items-center">
+        {/* Admin Section with Submenu */}
+        <div className="p-4 relative">
+          <button 
+            onClick={() => setShowAdminMenu(!showAdminMenu)}
+            className={`flex items-center w-full p-2 rounded-md ${
+              showAdminMenu ? "bg-gray-700" : "hover:bg-gray-700"
+            }`}
+          >
             <div className="h-8 w-8 rounded-full bg-gray-600 flex items-center justify-center">
               <User size={16} />
             </div>
-            <div className="hidden md:block ml-3">
+            <div className="hidden md:block ml-3 text-left">
               <div className="text-sm font-medium">Admin User</div>
-              <div className="text-xs text-gray-400">View Profile</div>
+              <div className="text-xs text-gray-400">Administrator</div>
             </div>
-          </div>
+          </button>
+
+          {/* Admin Submenu */}
+          {showAdminMenu && (
+            <div className="absolute bottom-16 left-4 right-4 bg-gray-700 rounded-md shadow-lg overflow-hidden z-20">
+              <ul className="py-1">
+                {adminSubMenus.map((item, index) => (
+                  <li key={index}>
+                    <button
+                      onClick={() => {
+                        navigate(`/dashboard${item.path}`);
+                        setShowAdminMenu(false);
+                      }}
+                      className={`flex items-center w-full px-4 py-2 text-left hover:bg-gray-600 ${
+                        item.className || ""
+                      }`}
+                    >
+                      {item.icon}
+                      <span className="text-sm">{item.title}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white shadow-sm z-10">
+        <header className="bg-gray-800 shadow-sm z-10">
           <div className="flex items-center justify-between p-4">
             <h1 className="text-2xl font-semibold text-white">
               Platform Dashboard
@@ -244,7 +320,7 @@ const PlatformDashboard = () => {
                 <input
                   type="text"
                   placeholder="Search across modules..."
-                  className="w-64 pl-10 pr-4 py-2 border rounded-md"
+                  className="w-64 pl-10 pr-4 py-2 border rounded-md bg-gray-700 text-white placeholder-gray-400"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -256,10 +332,10 @@ const PlatformDashboard = () => {
               {/* Notifications */}
               <div className="relative">
                 <button
-                  className="p-2 rounded-full hover:bg-gray-100 relative"
+                  className="p-2 rounded-full hover:bg-gray-700 relative"
                   onClick={() => setShowNotifications(!showNotifications)}
                 >
-                  <Bell size={20} />
+                  <Bell size={20} className="text-white" />
                   <span className="absolute top-0 right-0 h-4 w-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
                     5
                   </span>
@@ -282,10 +358,7 @@ const PlatformDashboard = () => {
                           <div className="flex items-start">
                             <div className="flex-shrink-0 pt-0.5">
                               {notification.type === "warning" && (
-                                <AlertTriangle
-                                  size={16}
-                                  className="text-amber-500"
-                                />
+                                <AlertTriangle size={16} className="text-amber-500" />
                               )}
                               {notification.type === "approval" && (
                                 <User size={16} className="text-blue-500" />
@@ -294,10 +367,7 @@ const PlatformDashboard = () => {
                                 <Bell size={16} className="text-red-500" />
                               )}
                               {notification.type === "system" && (
-                                <AlertTriangle
-                                  size={16}
-                                  className="text-gray-500"
-                                />
+                                <AlertTriangle size={16} className="text-gray-500" />
                               )}
                               {notification.type === "success" && (
                                 <Bell size={16} className="text-green-500" />
@@ -345,7 +415,7 @@ const PlatformDashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div>
+        <div className="flex-1 overflow-auto">
           <Outlet />
         </div>
       </div>

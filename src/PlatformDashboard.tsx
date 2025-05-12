@@ -1,25 +1,23 @@
-import { useState } from "react";
 import {
-  Bell,
-  User,
-  Search,
-  Home,
-  FileText,
-  Brain,
-  GitBranch,
-  LineChart,
-  Radio,
-  Code,
   AlertTriangle,
-  Settings,
-  Users,
-  Shield,
-  LogOut,
-  Lock,
+  Bell,
+  Brain,
+  Code,
   Database,
+  FileText,
+  GitBranch,
+  Home,
+  LineChart,
+  Lock,
+  Radio,
+  Search,
   Server,
-  Mail,
+  Settings,
+  Shield,
+  User,
+  Users
 } from "lucide-react";
+import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 // Mock data for notifications
@@ -330,7 +328,7 @@ const PlatformDashboard = () => {
           {showAdminMenu && (
             <div className="absolute bottom-16 left-4 right-4 bg-gray-700 rounded-md shadow-lg overflow-hidden z-20">
               <ul className="py-1">
-                {adminSubMenus.map((item, index) => (
+                {adminSubMenus.map((item:any, index) => (
                   <li key={index}>
                     <button
                       onClick={() => {

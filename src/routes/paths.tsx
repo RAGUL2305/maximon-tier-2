@@ -34,6 +34,12 @@ import PersonaTriggerMatrix from "../Signal Core/persona-trigger-matrix";
 import SignalCoreExportHub from "../Signal Core/signal-core-export-hub";
 import SignalIntakeConsole from "../Signal Core/signal-intake-console";
 import SimulationStudio from "../Signal Core/simulation-studio";
+import ApiDocumentationViewer from "../development-sdk/ApiDocsViewer";
+import APIErrorLog from "../development-sdk/ApiErrorLog";
+import APITokensPage from "../development-sdk/ApiTokensPage";
+import CLIAccessConfig from "../development-sdk/CliAccessConfig";
+import SDKLandingPage from "../development-sdk/SdkLandingPage";
+import WebhooksConfig from "../development-sdk/WebHooksConfig";
 import EntityRecognitionConfig from "../Signal Scope/entity-recognition-config";
 import DriftInsightDashboard from "../Signal Scope/drift-insight-dashboard";
 import SignalScope from "../Signal Scope/signalscope-dashboard";
@@ -139,6 +145,12 @@ const Paths = () => {
           <Route path="searchconsole" element={<MemorySearchConsole />} />
           <Route path="messageautomizer" element={<MessageAtomizer />} />
 
+          <Route path="sdk/apidocs" element={<ApiDocumentationViewer />} />
+          <Route path="sdk/apierror" element={<APIErrorLog />} />
+          <Route path="sdk/apitokens" element={<APITokensPage />} />
+          <Route path="sdk/cliaccess" element={<CLIAccessConfig />} />
+          <Route path="sdk/landing" element={<SDKLandingPage />} />
+          <Route path="sdk/webhooks" element={<WebhooksConfig />} />
           {/* Flow */}
 
           <Route

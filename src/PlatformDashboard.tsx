@@ -131,7 +131,14 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     { title: "SignalIntakeList", path: "/scope/signal-intake-list" },
     { title: "SignalScoringEngine", path: "/scope/signal-scoring-engine" },
   ],
-  SDK: [{ title: "Content Management", path: "/signals/contentmanagement" }],
+  SDK: [
+    { title: "Api Docs Viewer", path: "/sdk/apidocs" },
+    { title: "Api Error Log", path: "/sdk/apierror" },
+    { title: "Api Tokens Page", path: "/sdk/apitokens" },
+    { title: "Cli Access Config", path: "/sdk/cliaccess" },
+    { title: "Sdk Landing Page", path: "/sdk/landing" },
+    { title: "Web Hooks Config", path: "/sdk/webhooks" },
+  ],
 };
 
 // Mock system health data

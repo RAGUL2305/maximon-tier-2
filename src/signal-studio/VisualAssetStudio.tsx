@@ -4,19 +4,16 @@ import {
   Image,
   Check,
   X,
-  Sliders,
   Upload,
   Download,
   Edit3,
-  Layout,
-  Layers,
   Grid,
   Palette,
 } from "lucide-react";
 
 const VisualAssetStudio = () => {
   const [activeTab, setActiveTab] = useState("gallery");
-  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [selectedAsset] = useState(null);
   const [styleSettings, setStyleSettings] = useState({
     tone: "professional",
     colors: "brand",
@@ -63,7 +60,7 @@ const VisualAssetStudio = () => {
     },
   ];
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       month: "short",
@@ -80,7 +77,7 @@ const VisualAssetStudio = () => {
     );
   };
 
-  const handleSliderChange = (name, value) => {
+  const handleSliderChange = (name: string, value: string | number) => {
     setStyleSettings((prev) => ({
       ...prev,
       [name]: value,

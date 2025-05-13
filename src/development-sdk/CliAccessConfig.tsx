@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Terminal,
   Copy,
   CheckCircle,
   AlertTriangle,
   Info,
-  HelpCircle,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
@@ -13,7 +12,7 @@ import {
 const CLIAccessConfig = () => {
   const [token, setToken] = useState("mkt_os_cli_62f79adb3ae5510b");
   const [copied, setCopied] = useState(false);
-  const [expandedOS, setExpandedOS] = useState("mac");
+  const [expandedOS, setExpandedOS] = useState<string | null>("mac");
   const [tokenGenerated, setTokenGenerated] = useState(true);
 
   const handleCopy = () => {
@@ -28,7 +27,7 @@ const CLIAccessConfig = () => {
     setTokenGenerated(true);
   };
 
-  const toggleExpand = (os) => {
+  const toggleExpand = (os: string) => {
     if (expandedOS === os) {
       setExpandedOS(null);
     } else {

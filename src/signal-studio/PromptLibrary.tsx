@@ -6,7 +6,7 @@ type Prompts = {
   description: string;
   template: string;
   tags: string[];
-  lastUsed: string;
+  lastUsed: string | null;
 };
 
 function PromptLibrary() {
@@ -58,18 +58,18 @@ function PromptLibrary() {
     },
   ]);
 
-  const [filteredPrompts, setFilteredPrompts] = useState(prompts);
+  const [filteredPrompts, setFilteredPrompts] = useState<Prompts[]>(prompts);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [expandedPromptId, setExpandedPromptId] = useState<number | null>(null);
   const [isAddingPrompt, setIsAddingPrompt] = useState(false);
   const [newPrompt, setNewPrompt] = useState({
     title: "",
     description: "",
     template: "",
-    tags: [],
+    tags: [] as string[],
     tagInput: "",
-    lastUsed: null,
+    lastUsed: null as string | null,
   });
 
   const allTags = [
@@ -131,7 +131,7 @@ function PromptLibrary() {
     }
   }
 
-  function handleRemoveTag(tag) {
+  function handleRemoveTag(tag: string) {
     setNewPrompt({
       ...newPrompt,
       tags: newPrompt.tags.filter((t) => t !== tag),
@@ -140,12 +140,13 @@ function PromptLibrary() {
 
   function handleSubmitPrompt() {
     if (newPrompt.title && newPrompt.template) {
-      const currentDate = new Date().toISOString().split("T")[0];
-      const newPromptItem = {
+      const newPromptItem: Prompts = {
         id: prompts.length + 1,
-        ...newPrompt,
+        title: newPrompt.title,
+        description: newPrompt.description,
+        template: newPrompt.template,
+        tags: newPrompt.tags,
         lastUsed: null,
-        tagInput: undefined,
       };
 
       setPrompts([...prompts, newPromptItem]);
@@ -161,11 +162,11 @@ function PromptLibrary() {
     }
   }
 
-  function handleDeletePrompt(id) {
+  function handleDeletePrompt(id: number) {
     setPrompts(prompts.filter((prompt) => prompt.id !== id));
   }
 
-  function handleUsePrompt(id) {
+  function handleUsePrompt(id: number) {
     const currentDate = new Date().toISOString().split("T")[0];
     setPrompts(
       prompts.map((prompt) =>

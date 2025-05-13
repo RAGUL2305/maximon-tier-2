@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   BarChart,
   Bar,
@@ -10,20 +9,10 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
-import {
-  Bell,
-  FileText,
-  Image,
-  BookOpen,
-  AlertTriangle,
-  Settings,
-  Plus,
-  ChevronRight,
-} from "lucide-react";
+import { FileText, Image, AlertTriangle, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const SignalStudioDashboard = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
 
   // Mock data for KPI tiles
@@ -102,7 +91,7 @@ const SignalStudioDashboard = () => {
     { range: "91-100", count: 34 },
   ];
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     return status === "Approved"
       ? "bg-green-100 text-green-800"
       : "bg-yellow-100 text-yellow-800";

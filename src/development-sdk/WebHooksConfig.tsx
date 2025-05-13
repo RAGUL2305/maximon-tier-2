@@ -2,16 +2,24 @@ import { useState } from "react";
 import {
   Plus,
   Save,
-  Trash2,
   AlertTriangle,
   Check,
   ExternalLink,
-  Copy,
   X,
 } from "lucide-react";
 
+// Combined type that includes all properties needed
+type Webhook = {
+  id?: number;
+  name: string;
+  endpoint: string;
+  secret: string;
+  status?: string;
+  lastTriggered?: string;
+};
+
 const WebhooksConfig = () => {
-  const [webhooks, setWebhooks] = useState([
+  const [webhooks, setWebhooks] = useState<Webhook[]>([
     {
       id: 1,
       name: "Content Creation",
@@ -39,18 +47,26 @@ const WebhooksConfig = () => {
   ]);
 
   const [showModal, setShowModal] = useState(false);
-  const [currentWebhook, setCurrentWebhook] = useState({
+  const [currentWebhook, setCurrentWebhook] = useState<Webhook>({
     name: "",
     endpoint: "",
     secret: "",
   });
   const [validationError, setValidationError] = useState("");
-  const [testStatus, setTestStatus] = useState(null);
+  const [testStatus, setTestStatus] = useState<string | null>(null);
   const [testMessage, setTestMessage] = useState("");
 
-  const openModal = (webhook = null) => {
+  const openModal = (webhook?: Webhook | null) => {
     if (webhook) {
-      setCurrentWebhook({ ...webhook });
+      // Create a new object with the webhook properties
+      setCurrentWebhook({
+        id: webhook.id,
+        name: webhook.name,
+        endpoint: webhook.endpoint,
+        secret: webhook.secret,
+        status: webhook.status,
+        lastTriggered: webhook.lastTriggered,
+      });
     } else {
       setCurrentWebhook({ name: "", endpoint: "", secret: "" });
     }
@@ -84,7 +100,7 @@ const WebhooksConfig = () => {
     return true;
   };
 
-  const isValidUrl = (url) => {
+  const isValidUrl = (url: string) => {
     try {
       new URL(url);
       return true;
@@ -107,7 +123,7 @@ const WebhooksConfig = () => {
       );
     } else {
       // Add new webhook
-      const newId = Math.max(0, ...webhooks.map((w) => w.id)) + 1;
+      const newId = Math.max(0, ...webhooks.map((w) => w.id || 0)) + 1;
       setWebhooks([
         ...webhooks,
         { ...currentWebhook, id: newId, status: "active", lastTriggered: "-" },
@@ -116,11 +132,11 @@ const WebhooksConfig = () => {
     closeModal();
   };
 
-  const deleteWebhook = (id) => {
+  const deleteWebhook = (id: number) => {
     setWebhooks(webhooks.filter((w) => w.id !== id));
   };
 
-  const toggleWebhookStatus = (id) => {
+  const toggleWebhookStatus = (id: number) => {
     setWebhooks(
       webhooks.map((w) => {
         if (w.id === id) {
@@ -248,7 +264,7 @@ const WebhooksConfig = () => {
                   <td className="py-3 px-4 text-gray-600">
                     {webhook.lastTriggered === "-"
                       ? "-"
-                      : new Date(webhook.lastTriggered).toLocaleString()}
+                      : new Date(webhook.lastTriggered || "").toLocaleString()}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <button
@@ -277,7 +293,7 @@ const WebhooksConfig = () => {
                           ? "text-green-600 hover:text-gray-600"
                           : "text-gray-600 hover:text-green-600"
                       } p-1 ml-1`}
-                      onClick={() => toggleWebhookStatus(webhook.id)}
+                      onClick={() => toggleWebhookStatus(webhook.id || 0)}
                       title={
                         webhook.status === "active" ? "Deactivate" : "Activate"
                       }
@@ -316,7 +332,7 @@ const WebhooksConfig = () => {
                     </button>
                     <button
                       className="text-gray-600 hover:text-red-600 p-1 ml-1"
-                      onClick={() => deleteWebhook(webhook.id)}
+                      onClick={() => deleteWebhook(webhook.id || 0)}
                       title="Delete"
                     >
                       <svg
@@ -439,13 +455,13 @@ const WebhooksConfig = () => {
                         secret: e.target.value,
                       })
                     }
-                    readOnly={currentWebhook.id ? true : false}
+                    readOnly={!!currentWebhook.id}
                   />
                   <button
                     type="button"
                     className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300 border-l-0 rounded-r-md"
                     onClick={generateSecret}
-                    disabled={currentWebhook.id}
+                    disabled={!!currentWebhook.id}
                   >
                     Generate
                   </button>

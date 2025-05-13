@@ -46,12 +46,14 @@ const MessageAtomizer = () => {
     },
   ]);
 
-  const [atomizedUnits, setAtomizedUnits] = useState([]);
-  const [selectedUnits, setSelectedUnits] = useState([]);
+  const [atomizedUnits, setAtomizedUnits] = useState<
+    { id: string; content: string; length: number; status: string }[]
+  >([]);
+  const [selectedUnits, setSelectedUnits] = useState<string[]>([]);
   const [processing, setProcessing] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleAtomize = (id) => {
+  const handleAtomize = (id: number) => {
     setProcessing(true);
     setErrorMsg("");
 
@@ -59,8 +61,12 @@ const MessageAtomizer = () => {
     setTimeout(() => {
       // Check for file size limit for demonstration purposes
       const file = files.find((f) => f.id === id);
-      if (file.size === "8.5 MB") {
-        setErrorMsg(`Cannot atomize "${file.name}" - exceeds 20MB size limit`);
+      if (!file || file.size === "8.5 MB") {
+        setErrorMsg(
+          file
+            ? `Cannot atomize "${file.name}" - exceeds 20MB size limit`
+            : "Cannot atomize - file not found"
+        );
         setProcessing(false);
         return;
       }
@@ -78,7 +84,7 @@ const MessageAtomizer = () => {
     }, 1500);
   };
 
-  const generateAtomizedUnits = (fileName) => {
+  const generateAtomizedUnits = (fileName: string | string[]) => {
     // Mock data generation based on file name
     const baseUnits = [
       {
@@ -141,7 +147,7 @@ const MessageAtomizer = () => {
     }
   };
 
-  const toggleUnitSelection = (id) => {
+  const toggleUnitSelection = (id: string) => {
     if (selectedUnits.includes(id)) {
       setSelectedUnits(selectedUnits.filter((unitId) => unitId !== id));
     } else {
@@ -155,11 +161,14 @@ const MessageAtomizer = () => {
     const newUnit = {
       id: Math.random().toString(36).substr(2, 9),
       content: selectedUnits
-        .map((id) => atomizedUnits.find((unit) => unit.id === id).content)
+        .map(
+          (id) => atomizedUnits.find((unit) => unit.id === id)?.content ?? ""
+        )
         .join(" "),
       length: selectedUnits.reduce(
         (total, id) =>
-          total + atomizedUnits.find((unit) => unit.id === id).content.length,
+          total +
+          (atomizedUnits.find((unit) => unit.id === id)?.content.length || 0),
         0
       ),
       status: "active",

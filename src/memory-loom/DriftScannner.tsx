@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type SetStateAction } from "react";
 import {
   AlertTriangle,
   Filter,
@@ -7,18 +7,29 @@ import {
   ChevronUp,
   ArrowRight,
 } from "lucide-react";
+import React from "react";
 
 const DriftScannerView = () => {
   const [loading, setLoading] = useState(true);
-  const [driftAlerts, setDriftAlerts] = useState([]);
-  const [driftOverview, setDriftOverview] = useState({
+  const [driftAlerts, setDriftAlerts] = useState<
+    {
+      id: number;
+      filename: string;
+      driftScore: number;
+      lastChecked: string;
+      status: string;
+      driftAreas: string[];
+      details: string;
+    }[]
+  >([]);
+  const [driftOverview] = useState({
     filesDrifted: 12,
     avgDriftScore: 34.8,
     highRiskFiles: 3,
     lastScanned: "2025-05-09T16:45:23",
   });
   const [filterRange, setFilterRange] = useState([0, 100]);
-  const [expandedItem, setExpandedItem] = useState(null);
+  const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState("driftScore");
   const [sortDirection, setSortDirection] = useState("desc");
 
@@ -95,7 +106,7 @@ const DriftScannerView = () => {
     }, 1000);
   }, []);
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: any) => {
     switch (status) {
       case "critical":
         return "bg-red-100 text-red-800";
@@ -106,7 +117,7 @@ const DriftScannerView = () => {
     }
   };
 
-  const getStatusBadge = (status) => {
+  const getStatusBadge = (status: string) => {
     return (
       <span
         className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
@@ -118,7 +129,7 @@ const DriftScannerView = () => {
     );
   };
 
-  const handleSort = (field) => {
+  const handleSort = (field: SetStateAction<string>) => {
     if (sortBy === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -139,8 +150,10 @@ const DriftScannerView = () => {
           : b.filename.localeCompare(a.filename);
       } else if (sortBy === "lastChecked") {
         return sortDirection === "asc"
-          ? new Date(a.lastChecked) - new Date(b.lastChecked)
-          : new Date(b.lastChecked) - new Date(a.lastChecked);
+          ? new Date(a.lastChecked).getTime() -
+              new Date(b.lastChecked).getTime()
+          : new Date(b.lastChecked).getTime() -
+              new Date(a.lastChecked).getTime();
       }
       return 0;
     })
@@ -150,12 +163,12 @@ const DriftScannerView = () => {
       );
     });
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string | number | Date) => {
     const date = new Date(dateString);
     return date.toLocaleString();
   };
 
-  const handleRangeChange = (e) => {
+  const handleRangeChange = (e: { target: { value: string; id: string } }) => {
     const value = parseInt(e.target.value);
     const [min, max] = filterRange;
     if (e.target.id === "min-range") {
@@ -173,8 +186,8 @@ const DriftScannerView = () => {
     }, 800);
   };
 
-  const toggleExpand = (id) => {
-    setExpandedItem(expandedItem === id ? null : id);
+  const toggleExpand = (id: number | SetStateAction<null>) => {
+    setExpandedItem(expandedItem === id ? null : (id as number | null));
   };
 
   return (
@@ -323,13 +336,13 @@ const DriftScannerView = () => {
           <tbody className="divide-y divide-gray-200">
             {loading ? (
               <tr>
-                <td colSpan="5" className="py-4 px-4 text-center text-gray-500">
+                <td colSpan={5} className="py-4 px-4 text-center text-gray-500">
                   Loading drift data...
                 </td>
               </tr>
             ) : sortedAlerts.length === 0 ? (
               <tr>
-                <td colSpan="5" className="py-4 px-4 text-center text-gray-500">
+                <td colSpan={5} className="py-4 px-4 text-center text-gray-500">
                   No drift alerts match your filter criteria.
                 </td>
               </tr>
@@ -379,7 +392,7 @@ const DriftScannerView = () => {
                   </tr>
                   {expandedItem === alert.id && (
                     <tr className="bg-gray-50">
-                      <td colSpan="5" className="py-3 px-4">
+                      <td colSpan={5} className="py-3 px-4">
                         <div className="text-sm">
                           <div className="mb-2">
                             <span className="font-medium">Drift Areas: </span>

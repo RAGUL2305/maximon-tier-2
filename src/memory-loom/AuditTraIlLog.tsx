@@ -82,7 +82,10 @@ const AuditTrailLog = () => {
   ];
 
   const [auditData, setAuditData] = useState(initialAuditData);
-  const [sortConfig, setSortConfig] = useState({
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof (typeof initialAuditData)[0];
+    direction: "asc" | "desc";
+  }>({
     key: "timestamp",
     direction: "desc",
   });
@@ -93,8 +96,8 @@ const AuditTrailLog = () => {
   const [showFilters, setShowFilters] = useState(false);
 
   // Sort handler
-  const handleSort = (key) => {
-    let direction = "asc";
+  const handleSort = (key: keyof (typeof initialAuditData)[0]) => {
+    let direction: "asc" | "desc" = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
       direction = "desc";
     }
@@ -162,13 +165,13 @@ const AuditTrailLog = () => {
   const modules = [...new Set(initialAuditData.map((item) => item.module))];
 
   // Format date for display
-  const formatDate = (timestamp) => {
+  const formatDate = (timestamp: string | number | Date) => {
     const date = new Date(timestamp);
     return date.toLocaleString();
   };
 
   // Action color mapping
-  const getActionColor = (action) => {
+  const getActionColor = (action: string) => {
     const colors = {
       Upload: "bg-blue-100 text-blue-800",
       Edit: "bg-yellow-100 text-yellow-800",
@@ -177,7 +180,7 @@ const AuditTrailLog = () => {
       Create: "bg-purple-100 text-purple-800",
       Review: "bg-indigo-100 text-indigo-800",
     };
-    return colors[action] || "bg-gray-100 text-gray-800";
+    return colors[action as keyof typeof colors] || "bg-gray-100 text-gray-800";
   };
 
   return (
@@ -425,7 +428,7 @@ const AuditTrailLog = () => {
             ) : (
               <tr>
                 <td
-                  colSpan="5"
+                  colSpan={5}
                   className="px-6 py-4 text-center text-sm text-gray-500"
                 >
                   No audit records found matching the current filters.

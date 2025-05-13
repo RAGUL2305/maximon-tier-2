@@ -64,8 +64,16 @@ const BrandLexiconView = () => {
   const [filterApproved, setFilterApproved] = useState("all");
   const [filterCompliance, setFilterCompliance] = useState("all");
   const [filteredTerms, setFilteredTerms] = useState(terms);
-  const [isEditing, setIsEditing] = useState(null);
-  const [editForm, setEditForm] = useState({});
+  const [isEditing, setIsEditing] = useState<number | null>(null);
+  const [editForm, setEditForm] = useState<Term>({
+    id: 0,
+    term: "",
+    definition: "",
+    approvedUsage: false,
+    notes: "",
+    complianceStatus: "",
+    context: "",
+  });
 
   // Admin role simulation - in real app would come from auth context
   const isAdmin = true;
@@ -99,24 +107,55 @@ const BrandLexiconView = () => {
     setFilteredTerms(result);
   }, [terms, searchTerm, filterApproved, filterCompliance]);
 
-  const handleEdit = (term: SetStateAction<{}>) => {
+  interface Term {
+    id: number;
+    term: string;
+    definition: string;
+    approvedUsage: boolean;
+    notes: string;
+    complianceStatus: string;
+    context: string;
+  }
+
+  const handleEdit = (term: Term) => {
     setIsEditing(term.id);
     setEditForm({ ...term });
   };
 
   const handleCancelEdit = () => {
     setIsEditing(null);
-    setEditForm({});
+    setEditForm({
+      id: 0,
+      term: "",
+      definition: "",
+      approvedUsage: false,
+      notes: "",
+      complianceStatus: "",
+      context: "",
+    });
   };
 
   const handleSaveEdit = () => {
     setTerms(terms.map((term) => (term.id === editForm.id ? editForm : term)));
     setIsEditing(null);
-    setEditForm({});
+    setEditForm({
+      id: 0,
+      term: "",
+      definition: "",
+      approvedUsage: false,
+      notes: "",
+      complianceStatus: "",
+      context: "",
+    });
   };
 
-  const handleChange = (e: { target: { name: any; value: any; type: any; checked: any; }; }) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked; // Only relevant for checkboxes
     setEditForm({
       ...editForm,
       [name]: type === "checkbox" ? checked : value,
@@ -287,7 +326,7 @@ const BrandLexiconView = () => {
                           value={editForm.definition}
                           onChange={handleChange}
                           className="w-full p-1 border border-gray-300 rounded"
-                          rows="2"
+                          rows={2}
                         />
                       </td>
                       <td className="px-6 py-4">
@@ -317,7 +356,7 @@ const BrandLexiconView = () => {
                           value={editForm.notes}
                           onChange={handleChange}
                           className="w-full p-1 border border-gray-300 rounded"
-                          rows="2"
+                          rows={2}
                         />
                       </td>
                       <td className="px-6 py-4 flex space-x-2">

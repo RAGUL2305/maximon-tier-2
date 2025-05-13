@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 const MemoryObjectList = () => {
   // Sample data for demonstration
-  const [memoryObjects, setMemoryObjects] = useState([
+  const [memoryObjects] = useState([
     {
       id: 1,
       filename: "Brand_Guidelines_2025.pdf",
@@ -81,16 +81,33 @@ const MemoryObjectList = () => {
 
   // States for filtering and sorting
   const [searchTerm, setSearchTerm] = useState("");
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<{
+    tags: string[];
+    complianceStatus: string;
+    driftStatus: string;
+  }>({
     tags: [],
     complianceStatus: "",
     driftStatus: "",
   });
-  const [sortConfig, setSortConfig] = useState({
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof (typeof memoryObjects)[0];
+    direction: "asc" | "desc";
+  }>({
     key: "uploadDate",
     direction: "desc",
   });
-  const [filteredObjects, setFilteredObjects] = useState([]);
+  const [filteredObjects, setFilteredObjects] = useState<
+    {
+      id: number;
+      filename: string;
+      tags: string[];
+      uploadedBy: string;
+      uploadDate: string;
+      complianceStatus: string;
+      driftStatus: string;
+    }[]
+  >([]);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -142,8 +159,8 @@ const MemoryObjectList = () => {
   }, [memoryObjects, searchTerm, filters, sortConfig]);
 
   // Handle sort click
-  const handleSort = (key) => {
-    let direction = "asc";
+  const handleSort = (key: keyof (typeof memoryObjects)[0]) => {
+    let direction: "asc" | "desc" = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
       direction = "desc";
     }
@@ -151,7 +168,7 @@ const MemoryObjectList = () => {
   };
 
   // Handle tag filter toggle
-  const toggleTagFilter = (tag) => {
+  const toggleTagFilter = (tag: string) => {
     if (filters.tags.includes(tag)) {
       setFilters({
         ...filters,
@@ -166,7 +183,7 @@ const MemoryObjectList = () => {
   };
 
   // Render sort indicator
-  const renderSortIndicator = (key) => {
+  const renderSortIndicator = (key: string) => {
     if (sortConfig.key === key) {
       return sortConfig.direction === "asc" ? (
         <ChevronUp className="inline w-4 h-4" />
@@ -406,7 +423,7 @@ const MemoryObjectList = () => {
               ) : (
                 <tr>
                   <td
-                    colSpan="6"
+                    colSpan={6}
                     className="px-6 py-16 text-center text-gray-500"
                   >
                     No memory objects found matching the current filters.

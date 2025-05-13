@@ -1,6 +1,5 @@
 import {
   AlertTriangle,
-  Bell,
   BookOpen,
   Clock,
   Database,
@@ -119,8 +118,10 @@ const MemoryLoomDashboard = () => {
               <p className="text-sm text-gray-500 mt-1">+18 this week</p>
             </div>
 
-            <div className="bg-white rounded-lg shadow p-6"
-            onClick={() => navigate("/dashboard/brandlexicon")}>
+            <div
+              className="bg-white rounded-lg shadow p-6"
+              onClick={() => navigate("/dashboard/brandlexicon")}
+            >
               <div className="flex items-center justify-between">
                 <h3 className="text-gray-500 text-sm font-medium">
                   Brand Lexicon Terms

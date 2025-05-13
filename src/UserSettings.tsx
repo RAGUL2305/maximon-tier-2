@@ -432,7 +432,7 @@ const SettingsPage = () => {
                             defaultChecked
                           />
                           <label htmlFor="notify-render" className="text-sm">
-                            Video render completion
+                            New draft created: "Summer Campaign 2025"
                           </label>
                         </div>
                         <div className="flex items-center">
@@ -443,7 +443,7 @@ const SettingsPage = () => {
                             defaultChecked
                           />
                           <label htmlFor="notify-comment" className="text-sm">
-                            Comments on your videos
+                            Drift detected in "Q2 Product Launch" content
                           </label>
                         </div>
                         <div className="flex items-center">
@@ -454,7 +454,7 @@ const SettingsPage = () => {
                             defaultChecked
                           />
                           <label htmlFor="notify-share" className="text-sm">
-                            When someone shares your video
+                            Journey "New Customer Onboarding" is now active
                           </label>
                         </div>
                         <div className="flex items-center">
@@ -464,7 +464,8 @@ const SettingsPage = () => {
                             className="mr-2"
                           />
                           <label htmlFor="notify-tips" className="text-sm">
-                            Tips and feature updates
+                            Brand guideline violation in draft "Promotional
+                            Email"
                           </label>
                         </div>
                       </div>

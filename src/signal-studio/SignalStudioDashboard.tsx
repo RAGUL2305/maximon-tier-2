@@ -221,7 +221,10 @@ const SignalStudioDashboard = () => {
                 <ChevronRight className="ml-auto text-gray-400" size={20} />
               </button>
 
-              <button className="bg-white border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-50">
+              <button
+                onClick={() => navigate("/dashboard/studio/snippet")}
+                className="bg-white border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-50"
+              >
                 <div className="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mr-3">
                   <FileText size={20} />
                 </div>

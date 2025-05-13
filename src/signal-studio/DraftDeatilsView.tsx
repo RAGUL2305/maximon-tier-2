@@ -19,7 +19,7 @@ const DraftDetailView = () => {
     "This innovative product leverages cutting-edge AI technology to transform how businesses operate. By streamlining workflows and automating routine tasks, it enables teams to focus on high-value strategic initiatives that drive growth. Our solution integrates seamlessly with existing systems while providing comprehensive analytics for data-driven decision making."
   );
   const [isEditing, setIsEditing] = useState(false);
-  const [status, setStatus] = useState("Draft");
+  const [status] = useState("Draft");
   const [toneScore, setToneScore] = useState(87);
   const [driftScore, setDriftScore] = useState(92);
   const [showComments, setShowComments] = useState(false);
@@ -64,15 +64,15 @@ const DraftDetailView = () => {
     },
   ];
 
-  const handleApprove = () => {
-    navigate("/dashboard/studio/detailview");
-    setStatus("Approved");
-  };
+  // const handleApprove = () => {
+  //   navigate("/dashboard/studio/detailview");
+  //   setStatus("Approved");
+  // };
 
-  const handleReject = () => {
-    setStatus("Rejected");
-    navigate("/dashboard/studio/detailview");
-  };
+  // const handleReject = () => {
+  //   setStatus("Rejected");
+  //   navigate("/dashboard/studio/detailview");
+  // };
 
   const handleEdit = () => {
     setIsEditing(true);

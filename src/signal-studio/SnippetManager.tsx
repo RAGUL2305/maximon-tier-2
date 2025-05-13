@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, type KeyboardEvent, type ChangeEvent } from "react";
 import {
   Search,
   Plus,
@@ -9,8 +9,29 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
+// Define TypeScript interfaces for our data structures
+interface Snippet {
+  id: number;
+  title: string;
+  content: string;
+  usage: number;
+  tags: string[];
+  lastUsed: string;
+  compliance: "compliant" | "warning" | "violation";
+}
+
+interface EditingSnippet extends Snippet {
+  newTags: string;
+}
+
+interface NewSnippet {
+  title: string;
+  content: string;
+  tags: string[];
+}
+
 const SnippetManager = () => {
-  const [snippets, setSnippets] = useState([
+  const [snippets, setSnippets] = useState<Snippet[]>([
     {
       id: 1,
       title: "Brand Promise",
@@ -62,18 +83,20 @@ const SnippetManager = () => {
     },
   ]);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [editingSnippet, setEditingSnippet] = useState(null);
-  const [newSnippet, setNewSnippet] = useState({
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [editingSnippet, setEditingSnippet] = useState<EditingSnippet | null>(
+    null
+  );
+  const [newSnippet, setNewSnippet] = useState<NewSnippet>({
     title: "",
     content: "",
     tags: [],
   });
-  const [isCreating, setIsCreating] = useState(false);
-  const [newTag, setNewTag] = useState("");
-  const [complianceFilter, setComplianceFilter] = useState("all");
-  const [sortOption, setSortOption] = useState("usage");
+  const [isCreating, setIsCreating] = useState<boolean>(false);
+  const [newTag, setNewTag] = useState<string>("");
+  const [complianceFilter, setComplianceFilter] = useState<string>("all");
+  const [sortOption, setSortOption] = useState<string>("usage");
 
   // All available tags
   const allTags = [
@@ -81,12 +104,12 @@ const SnippetManager = () => {
   ].sort();
 
   // Handle search
-  const handleSearch = (e) => {
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
   // Handle tag selection
-  const handleTagSelect = (tag) => {
+  const handleTagSelect = (tag: string) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
     } else {
@@ -95,23 +118,29 @@ const SnippetManager = () => {
   };
 
   // Edit snippet
-  const startEditing = (snippet) => {
+  const startEditing = (snippet: Snippet) => {
     setEditingSnippet({ ...snippet, newTags: snippet.tags.join(", ") });
   };
 
   // Save edited snippet
   const saveEditedSnippet = () => {
+    if (!editingSnippet) return;
+
     const tags = editingSnippet.newTags
       .split(",")
       .map((tag) => tag.trim())
       .filter((tag) => tag);
 
-    const updatedSnippet = {
-      ...editingSnippet,
+    // Create a new snippet without the newTags property
+    const updatedSnippet: Snippet = {
+      id: editingSnippet.id,
+      title: editingSnippet.title,
+      content: editingSnippet.content,
+      usage: editingSnippet.usage,
       tags: tags,
+      lastUsed: editingSnippet.lastUsed,
+      compliance: editingSnippet.compliance,
     };
-
-    delete updatedSnippet.newTags;
 
     setSnippets(
       snippets.map((s) => (s.id === updatedSnippet.id ? updatedSnippet : s))
@@ -125,7 +154,7 @@ const SnippetManager = () => {
   };
 
   // Delete snippet
-  const deleteSnippet = (id) => {
+  const deleteSnippet = (id: number) => {
     setSnippets(snippets.filter((s) => s.id !== id));
     if (editingSnippet && editingSnippet.id === id) {
       setEditingSnippet(null);
@@ -146,7 +175,7 @@ const SnippetManager = () => {
   };
 
   // Remove tag from new snippet
-  const removeTagFromNewSnippet = (tagToRemove) => {
+  const removeTagFromNewSnippet = (tagToRemove: string) => {
     setNewSnippet({
       ...newSnippet,
       tags: newSnippet.tags.filter((tag) => tag !== tagToRemove),
@@ -156,7 +185,7 @@ const SnippetManager = () => {
   // Save new snippet
   const saveNewSnippet = () => {
     if (newSnippet.title && newSnippet.content) {
-      const snippet = {
+      const snippet: Snippet = {
         id:
           snippets.length > 0 ? Math.max(...snippets.map((s) => s.id)) + 1 : 1,
         title: newSnippet.title,
@@ -203,19 +232,21 @@ const SnippetManager = () => {
     } else if (sortOption === "title") {
       return a.title.localeCompare(b.title);
     } else if (sortOption === "date") {
-      return new Date(b.lastUsed) - new Date(a.lastUsed);
+      return new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime();
     }
     return 0;
   });
 
   // Copy to clipboard
-  const copyToClipboard = (content) => {
+  const copyToClipboard = (content: string) => {
     navigator.clipboard.writeText(content);
     // Update the snippet usage count
-    const snippetId = snippets.find((s) => s.content === content).id;
+    const snippet = snippets.find((s) => s.content === content);
+    if (!snippet) return;
+
     setSnippets(
       snippets.map((s) => {
-        if (s.id === snippetId) {
+        if (s.id === snippet.id) {
           return {
             ...s,
             usage: s.usage + 1,
@@ -225,6 +256,14 @@ const SnippetManager = () => {
         return s;
       })
     );
+  };
+
+  // Handle key press for adding tags
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addTagToNewSnippet();
+    }
   };
 
   return (
@@ -363,7 +402,7 @@ const SnippetManager = () => {
                   onChange={(e) => setNewTag(e.target.value)}
                   className="flex-1 px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Add a tag"
-                  onKeyPress={(e) => e.key === "Enter" && addTagToNewSnippet()}
+                  onKeyDown={handleKeyDown}
                 />
                 <button
                   onClick={addTagToNewSnippet}

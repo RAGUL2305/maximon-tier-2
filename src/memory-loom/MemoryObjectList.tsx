@@ -348,16 +348,10 @@ const MemoryObjectList = () => {
                   <tr
                     key={object.id}
                     className="hover:bg-gray-50 cursor-pointer"
-                    onClick={() => navigate("/dashboard/memoryobjectlist")}
-
+                    onClick={() => navigate("/dashboard/memoryobjectdetails")}
                   >
                     <td className="px-6 py-4 text-blue-600 font-medium">
-                      <div
-                        className="flex items-center"
-                        onClick={() =>
-                          navigate("/memoryobjectdetails")
-                        }
-                      >
+                      <div className="flex items-center">
                         <FileText size={16} className="mr-2 text-gray-500" />
                         {object.filename}
                       </div>

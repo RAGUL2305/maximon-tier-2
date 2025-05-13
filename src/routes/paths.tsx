@@ -8,7 +8,6 @@ import Dashboard from "../Dashboard";
 import PlatformDashboard from "../PlatformDashboard";
 import SignalStudioDashboard from "../signal-studio/SignalStudioDashboard";
 import CreateEditDraftPage from "../signal-studio/CreateEditDraftPage";
-import VisualAssetStudio from "../signal-studio/VisualAssestStudio";
 import SnippetManager from "../signal-studio/SnippetManager";
 import PromptLibrary from "../signal-studio/PromptLibrary";
 import ExportHub from "../signal-studio/ExprotHub";
@@ -65,6 +64,7 @@ import TrustScoreOverlay from "../admin-tools/TrustScoreOverlay";
 import VersionHistoryAuditLogs from "../admin-tools/VersionHistory";
 import TriggerConfigurator from "../signal-flow/TriggerConfig";
 import SettingsPage from "../UserSettings";
+import VisualAssetStudio from "../signal-studio/VisualAssetStudio";
 
 const Paths = () => {
   return (

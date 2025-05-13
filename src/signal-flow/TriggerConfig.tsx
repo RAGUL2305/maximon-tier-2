@@ -1,8 +1,22 @@
-import { useState } from 'react';
-import { AlertCircle, CheckCircle, PlusCircle, Save, ChevronDown, Edit, Trash2, Play, Pause } from 'lucide-react';
+import { useState, type ChangeEvent } from 'react';
+import { AlertCircle, CheckCircle, PlusCircle, Save, ChevronDown, Edit, Trash2, Play, Pause, X } from 'lucide-react';
+
+// Define TypeScript interfaces
+interface Trigger {
+  id: number;
+  name: string;
+  eventSource: string;
+  condition: string;
+  status: 'Active' | 'Inactive';
+}
+
+interface FilterState {
+  status: string;
+  eventSource: string;
+}
 
 const TriggerConfigurator = () => {
-  const [triggers, setTriggers] = useState([
+  const [triggers, setTriggers] = useState<Trigger[]>([
     {
       id: 1,
       name: 'Email Opened',
@@ -26,20 +40,24 @@ const TriggerConfigurator = () => {
     }
   ]);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [currentTrigger, setCurrentTrigger] = useState({
-    id: null,
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [currentTrigger, setCurrentTrigger] = useState<Trigger>({
+    id: 0,
     name: '',
     eventSource: 'Signal Studio',
     condition: '',
     status: 'Active'
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const [validationError, setValidationError] = useState('');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [validationError, setValidationError] = useState<string>('');
+  const [filters, setFilters] = useState<FilterState>({
+    status: 'all',
+    eventSource: 'all'
+  });
 
   const eventSources = ['Signal Studio', 'SignalScope', 'Signal Flow', 'CDP', 'CRM'];
 
-  const openModal = (trigger = null) => {
+  const openModal = (trigger: Trigger | null = null) => {
     if (trigger) {
       setCurrentTrigger({...trigger});
       setIsEditing(true);
@@ -62,9 +80,17 @@ const TriggerConfigurator = () => {
     setValidationError('');
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setCurrentTrigger(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleFilterChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFilters(prev => ({
       ...prev,
       [name]: value
     }));
@@ -102,11 +128,11 @@ const TriggerConfigurator = () => {
     closeModal();
   };
 
-  const deleteTrigger = (id) => {
+  const deleteTrigger = (id: number) => {
     setTriggers(prev => prev.filter(t => t.id !== id));
   };
 
-  const toggleStatus = (id) => {
+  const toggleStatus = (id: number) => {
     setTriggers(prev => prev.map(t => {
       if (t.id === id) {
         return {
@@ -117,6 +143,17 @@ const TriggerConfigurator = () => {
       return t;
     }));
   };
+
+  // Filter triggers based on current filter state
+  const filteredTriggers = triggers.filter(trigger => {
+    const statusMatch = filters.status === 'all' || 
+      trigger.status.toLowerCase() === filters.status;
+    
+    const sourceMatch = filters.eventSource === 'all' || 
+      trigger.eventSource.toLowerCase() === filters.eventSource;
+    
+    return statusMatch && sourceMatch;
+  });
 
   return (
     <div className="bg-gray-50 p-6 rounded-lg shadow">
@@ -140,6 +177,9 @@ const TriggerConfigurator = () => {
           <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
           <div className="relative">
             <select 
+              name="status"
+              value={filters.status}
+              onChange={handleFilterChange}
               className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
             >
               <option value="all">All Statuses</option>
@@ -156,6 +196,9 @@ const TriggerConfigurator = () => {
           <label className="block text-sm font-medium text-gray-700 mb-1">Event Source</label>
           <div className="relative">
             <select 
+              name="eventSource"
+              value={filters.eventSource}
+              onChange={handleFilterChange}
               className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md"
             >
               <option value="all">All Sources</option>
@@ -183,7 +226,7 @@ const TriggerConfigurator = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {triggers.map(trigger => (
+            {filteredTriggers.map(trigger => (
               <tr key={trigger.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="font-medium text-gray-900">{trigger.name}</div>
@@ -236,9 +279,9 @@ const TriggerConfigurator = () => {
                 </td>
               </tr>
             ))}
-            {triggers.length === 0 && (
+            {filteredTriggers.length === 0 && (
               <tr>
-                <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
                   No triggers configured. Click "Add Trigger" to create one.
                 </td>
               </tr>
@@ -247,131 +290,104 @@ const TriggerConfigurator = () => {
         </table>
       </div>
 
-      {/* Bulk Actions (Tier 2 feature) */}
-      {triggers.length > 0 && (
-        <div className="mt-4 flex items-center space-x-4">
-          <span className="text-sm text-gray-500">Bulk Actions:</span>
-          <button className="text-sm text-blue-600 hover:text-blue-800">Enable Selected</button>
-          <button className="text-sm text-blue-600 hover:text-blue-800">Disable Selected</button>
-        </div>
-      )}
-
       {/* Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity">
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div className="flex justify-between items-center border-b px-6 py-4">
+              <h3 className="text-lg font-medium text-gray-900">
+                {isEditing ? 'Edit Trigger' : 'Add New Trigger'}
+              </h3>
+              <button 
+                onClick={closeModal}
+                className="text-gray-400 hover:text-gray-500"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
-            <div 
-              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-            >
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  {isEditing ? 'Edit Trigger' : 'Create New Trigger'}
-                </h3>
-                
-                {validationError && (
-                  <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded flex items-start">
-                    <AlertCircle className="w-5 h-5 mr-2 mt-0.5" />
-                    <span>{validationError}</span>
-                  </div>
-                )}
-                
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Trigger Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={currentTrigger.name}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter trigger name"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Event Source
-                    </label>
-                    <select
-                      name="eventSource"
-                      value={currentTrigger.eventSource}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      {eventSources.map(source => (
-                        <option key={source} value={source}>{source}</option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Condition <span className="text-red-500">*</span>
-                    </label>
-                    <textarea
-                      name="condition"
-                      value={currentTrigger.condition}
-                      onChange={handleInputChange}
-                      rows="3"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter trigger condition"
-                    ></textarea>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Status
-                    </label>
-                    <div className="flex items-center space-x-4">
-                      <label className="inline-flex items-center">
-                        <input
-                          type="radio"
-                          name="status"
-                          value="Active"
-                          checked={currentTrigger.status === 'Active'}
-                          onChange={handleInputChange}
-                          className="form-radio h-4 w-4 text-blue-600"
-                        />
-                        <span className="ml-2 text-gray-700">Active</span>
-                      </label>
-                      <label className="inline-flex items-center">
-                        <input
-                          type="radio"
-                          name="status"
-                          value="Inactive"
-                          checked={currentTrigger.status === 'Inactive'}
-                          onChange={handleInputChange}
-                          className="form-radio h-4 w-4 text-blue-600"
-                        />
-                        <span className="ml-2 text-gray-700">Inactive</span>
-                      </label>
-                    </div>
-                  </div>
+            
+            <div className="px-6 py-4">
+              {validationError && (
+                <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md flex items-start">
+                  <AlertCircle className="w-5 h-5 mr-2 mt-0.5" />
+                  <span>{validationError}</span>
                 </div>
+              )}
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Trigger Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={currentTrigger.name}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter trigger name"
+                />
               </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button
-                  type="button"
-                  onClick={saveChanges}
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Event Source
+                </label>
+                <select
+                  name="eventSource"
+                  value={currentTrigger.eventSource}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <Save className="w-4 h-4 mr-2" />
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Cancel
-                </button>
+                  {eventSources.map(source => (
+                    <option key={source} value={source}>{source}</option>
+                  ))}
+                </select>
               </div>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Condition
+                </label>
+                <input
+                  type="text"
+                  name="condition"
+                  value={currentTrigger.condition}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Define trigger condition"
+                />
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Status
+                </label>
+                <select
+                  name="status"
+                  value={currentTrigger.status}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="border-t px-6 py-4 flex justify-end">
+              <button
+                onClick={closeModal}
+                className="mr-3 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveChanges}
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md flex items-center"
+              >
+                <Save className="w-4 h-4 mr-2" />
+                {isEditing ? 'Update' : 'Save'}
+              </button>
             </div>
           </div>
         </div>

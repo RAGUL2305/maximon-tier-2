@@ -73,7 +73,7 @@ const JourneyListView = () => {
     },
   ]);
 
-  const [selectedJourneys, setSelectedJourneys] = useState([]);
+  const [selectedJourneys, setSelectedJourneys] = useState<number[]>([]);
   const [statusFilter, setStatusFilter] = useState("All");
   const [channelFilter, setChannelFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");

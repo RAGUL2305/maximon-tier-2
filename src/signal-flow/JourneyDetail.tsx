@@ -10,7 +10,9 @@ const JourneyDetailView = () => {
   
   const [journeyStatus, setJourneyStatus] = useState('Active');
   
-  const toggleExpanded = (section: string) => {
+  type ExpandedSection = keyof typeof expanded;
+
+  const toggleExpanded = (section: ExpandedSection) => {
     setExpanded({
       ...expanded,
       [section]: !expanded[section]

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type SetStateAction } from 'react';
 import { Check, Plus, Save, Trash2, Edit } from 'lucide-react';
 
 export default function PersonaChannelMap() {
@@ -18,7 +18,7 @@ export default function PersonaChannelMap() {
   ]);
 
   // Mapping between personas and channels
-  const [mappings, setMappings] = useState({
+  const [mappings, setMappings] = useState<Record<number, number[]>>({
     1: [1, 4, 5],     // Decision Makers -> Email, Website, Events
     2: [1, 2, 3, 4],  // Technical Evaluators -> Email, Social, Search, Website
     3: [1, 2, 4]      // End Users -> Email, Social, Website
@@ -29,7 +29,7 @@ export default function PersonaChannelMap() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingPersonaId, setEditingPersonaId] = useState(null);
 
-  const toggleMapping = (personaId, channelId) => {
+  const toggleMapping = (personaId: number, channelId: number) => {
     setMappings(prev => {
       const personaMappings = [...(prev[personaId] || [])];
       const index = personaMappings.indexOf(channelId);
@@ -54,7 +54,7 @@ export default function PersonaChannelMap() {
     setShowAddForm(false);
   };
 
-  const startEditPersona = (id) => {
+  const startEditPersona = (id: number | SetStateAction<null>) => {
     setPersonas(personas.map(p => 
       p.id === id 
         ? { ...p, isEditing: true } 
@@ -63,7 +63,7 @@ export default function PersonaChannelMap() {
     setEditingPersonaId(id);
   };
 
-  const saveEditPersona = (id, updatedName, updatedDesc) => {
+  const saveEditPersona = (id: number, updatedName: any, updatedDesc: any) => {
     setPersonas(personas.map(p => 
       p.id === id 
         ? { ...p, name: updatedName, description: updatedDesc, isEditing: false } 
@@ -72,7 +72,7 @@ export default function PersonaChannelMap() {
     setEditingPersonaId(null);
   };
 
-  const deletePersona = (id) => {
+  const deletePersona = (id: number) => {
     setPersonas(personas.filter(p => p.id !== id));
     // Remove mappings for this persona
     const newMappings = { ...mappings };
@@ -168,7 +168,7 @@ export default function PersonaChannelMap() {
                         defaultValue={persona.description}
                         id={`edit-desc-${persona.id}`}
                         className="w-full p-1 border border-gray-300 rounded-md text-sm"
-                        rows="2"
+                        rows={2}
                       />
                       <button 
                         onClick={() => saveEditPersona(

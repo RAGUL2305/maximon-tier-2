@@ -17,7 +17,7 @@ const FallbackEscalationManager = () => {
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newRule, setNewRule] = useState({ trigger: '', action: '', path: '', priority: 'Medium' });
-  const [expandedRule, setExpandedRule] = useState(null);
+  const [expandedRule, setExpandedRule] = useState<number | null>(null);
   
   const handleAddRule = () => {
     if (activeTab === 'fallback') {
@@ -50,7 +50,7 @@ const FallbackEscalationManager = () => {
     setNewRule({ trigger: '', action: '', path: '', priority: 'Medium' });
   };
   
-  const toggleRuleStatus = (id, type) => {
+  const toggleRuleStatus = (id: number, type: string) => {
     if (type === 'fallback') {
       setFallbackRules(fallbackRules.map(rule => 
         rule.id === id ? { ...rule, status: rule.status === 'Active' ? 'Inactive' : 'Active' } : rule
@@ -62,7 +62,7 @@ const FallbackEscalationManager = () => {
     }
   };
   
-  const deleteRule = (id, type) => {
+  const deleteRule = (id: number, type: string) => {
     if (type === 'fallback') {
       setFallbackRules(fallbackRules.filter(rule => rule.id !== id));
     } else {
@@ -70,8 +70,8 @@ const FallbackEscalationManager = () => {
     }
   };
   
-  const toggleExpandRule = (id) => {
-    setExpandedRule(expandedRule === id ? null : id);
+  const toggleExpandRule = (id: number | null) => {
+      setExpandedRule(expandedRule === id ? null : id);
   };
   
   return (
@@ -160,7 +160,7 @@ const FallbackEscalationManager = () => {
                   </tr>
                   {expandedRule === rule.id && (
                     <tr className="bg-gray-50">
-                      <td colSpan="4" className="px-6 py-4">
+                      <td colSpan={4} className="px-6 py-4">
                         <div className="text-sm text-gray-700">
                           <div className="mb-3">
                             <span className="font-medium">Trigger Details:</span> When a {rule.trigger} event occurs in a journey
@@ -252,7 +252,7 @@ const FallbackEscalationManager = () => {
                   </tr>
                   {expandedRule === rule.id && (
                     <tr className="bg-gray-50">
-                      <td colSpan="5" className="px-6 py-4">
+                      <td colSpan={5} className="px-6 py-4">
                         <div className="text-sm text-gray-700">
                           <div className="mb-3">
                             <span className="font-medium">Escalation Details:</span> When a {rule.trigger} is detected

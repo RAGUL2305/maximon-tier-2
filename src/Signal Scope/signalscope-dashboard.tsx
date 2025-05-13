@@ -1,11 +1,4 @@
-import {
-  Bell,
-  Eye,
-  Filter,
-  MessageSquare,
-  RefreshCw,
-  Search,
-} from "lucide-react";
+import { Eye, Filter, MessageSquare, RefreshCw, Search } from "lucide-react";
 import { useState } from "react";
 import {
   CartesianGrid,
@@ -20,9 +13,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import SignalIntakeList from "./signal-intake-list";
+import MemoryLookupConsole from "./memory-lookup-console";
+import InsightRouter from "./insight-router";
+import { useNavigate } from "react-router-dom";
 
 const SignalScope = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const navigate = useNavigate();
 
   // Mock data
   const signalData = [
@@ -472,7 +470,12 @@ const SignalScope = () => {
                 <h2 className="text-lg font-medium text-gray-800">
                   Entity Recognition
                 </h2>
-                <button className="text-sm text-blue-600 hover:text-blue-800">
+                <button
+                  className="text-sm text-blue-600 hover:text-blue-800"
+                  onClick={() =>
+                    navigate("/dashboard/scope/entity-recognition-config")
+                  }
+                >
                   Configure Entities
                 </button>
               </div>
@@ -554,38 +557,9 @@ const SignalScope = () => {
           </div>
         )}
 
-        {activeTab === "signals" && (
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-lg font-medium text-gray-800">
-              Signal Intake List
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              This tab would contain the Signal Intake Interface.
-            </p>
-          </div>
-        )}
-
-        {activeTab === "memory" && (
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-lg font-medium text-gray-800">
-              Memory Lookup Console
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              This tab would contain the Memory Lookup Console.
-            </p>
-          </div>
-        )}
-
-        {activeTab === "insights" && (
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-lg font-medium text-gray-800">
-              Insight Router
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              This tab would contain the Insight Router interface.
-            </p>
-          </div>
-        )}
+        {activeTab === "signals" && <SignalIntakeList />}
+        {activeTab === "memory" && <MemoryLookupConsole />}
+        {activeTab === "insights" && <InsightRouter />}
       </main>
     </div>
   );

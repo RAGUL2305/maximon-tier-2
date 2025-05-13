@@ -19,7 +19,6 @@ import {
   Search,
   Server,
   Settings,
-  Shield,
   User,
   Users,
   X,
@@ -39,7 +38,7 @@ const sidebarItems = [
   { icon: <GitBranch size={20} />, label: "Flow", path: "/signalflow" },
   { icon: <LineChart size={20} />, label: "Core", path: "/core/signal-core" },
   { icon: <Radio size={20} />, label: "Scope", path: "/scope/signal-scope" },
-  { icon: <Code size={20} />, label: "SDK", path: "/sdk/apidocs" },
+  { icon: <Code size={20} />, label: "SDK", path: "/sdk/landing" },
 ];
 
 const subMenus: Record<string, { title: string; path: string }[]> = {
@@ -76,38 +75,39 @@ const subMenus: Record<string, { title: string; path: string }[]> = {
     // { title: "Trigger Configurator", path: "/triggerconfigurator" },
   ],
   Core: [
+    // {
+    //   title: "DecisionEngineDashboard",
+    //   path: "/core/decision-engine-dashboard",
+    // },
+    // { title: "GrowthSignalMapper", path: "/core/growth-signal-mapper" },
     {
-      title: "DecisionEngineDashboard",
-      path: "/core/decision-engine-dashboard",
-    },
-    { title: "GrowthSignalMapper", path: "/core/growth-signal-mapper" },
-    {
-      title: "PerformanceAnalyticsDashboard",
+      title: "Performance Analytics",
       path: "/core/performance-analytics-dashboard",
     },
-    { title: "PersonaTriggerMatrix", path: "/core/persona-trigger-matrix" },
-    { title: "SignalCoreExportHub", path: "/core/signal-core-exportHub" },
-    { title: "SignalIntakeConsole", path: "/core/signal-intake-console" },
-    { title: "SimulationStudio", path: "/core/simulation-studio" },
+    { title: "Persona Trigger Matrix", path: "/core/persona-trigger-matrix" },
+    // { title: "SignalCoreExportHub", path: "/core/signal-core-exportHub" },
+    // { title: "SignalIntakeConsole", path: "/core/signal-intake-console" },
+    { title: "Simulation Studio", path: "/core/simulation-studio" },
   ],
   Scope: [
-    { title: "DriftInsightDashboard", path: "/scope/drift-insight-dashboard" },
-    {
-      title: "EntityRecognitionConfig",
-      path: "/scope/entity-recognition-config",
-    },
-    { title: "EscalationLayer", path: "/scope/escalation-layer" },
-    { title: "InsightRouter", path: "/scope/insight-router" },
-    { title: "MemoryLookupConsole", path: "/scope/memory-lookup-console" },
-    { title: "SignalIntakeList", path: "/scope/signal-intake-list" },
-    { title: "SignalScoringEngine", path: "/scope/signal-scoring-engine" },
+    { title: "Drift Insight", path: "/scope/drift-insight-dashboard" },
+    // {
+    //   title: "EntityRecognitionConfig",
+    //   path: "/scope/entity-recognition-config",
+    // },
+    { title: "Escalation Layer", path: "/scope/escalation-layer" },
+    // { title: "InsightRouter", path: "/scope/insight-router" },
+    // { title: "MemoryLookupConsole", path: "/scope/memory-lookup-console" },
+    // { title: "SignalIntakeList", path: "/scope/signal-intake-list" },
+    { title: "Signal Scoring Engine", path: "/scope/signal-scoring-engine" },
   ],
   SDK: [
-    { title: "Api Error Log", path: "/sdk/apierror" },
-    { title: "Api Tokens Page", path: "/sdk/apitokens" },
-    { title: "Cli Access Config", path: "/sdk/cliaccess" },
-    { title: "Sdk Landing Page", path: "/sdk/landing" },
+    { title: "API Error Log", path: "/sdk/apierror" },
+    { title: "API Tokens Page", path: "/sdk/apitokens" },
+    { title: "CLI Access Config", path: "/sdk/cliaccess" },
+    // { title: "Sdk Landing Page", path: "/sdk/landing" },
     { title: "Web Hooks Config", path: "/sdk/webhooks" },
+    { title: "API Documentation", path: "/sdk/apidocs" },
   ],
 };
 
@@ -119,20 +119,20 @@ const adminSubMenus = [
     icon: <User size={16} className="mr-2" />,
   },
   {
-    title: "Governance Guarddrail",
+    title: "Governance Guardrail",
     path: "/governance",
     icon: <Lock size={16} className="mr-2" />,
   },
   {
-    title: "Memorysync Panel",
+    title: "Memory Sync Panel",
     path: "/memorysync",
     icon: <Users size={16} className="mr-2" />,
   },
-  {
-    title: "Notification Pannel",
-    path: "/notification",
-    icon: <Shield size={16} className="mr-2" />,
-  },
+  // {
+  //   title: "Notification Pannel",
+  //   path: "/notification",
+  //   icon: <Shield size={16} className="mr-2" />,
+  // },
   {
     title: "Role Permissions",
     path: "/rolepermission",
@@ -559,8 +559,8 @@ const PlatformDashboard = () => {
               <User size={16} />
             </div>
             <div className="hidden md:block ml-3 text-left">
-              <div className="text-sm font-medium">Admin User</div>
-              <div className="text-xs text-gray-400">View Profile</div>
+              <div className="text-sm font-medium">Admin Settings</div>
+              {/* <div className="text-xs text-gray-400">View Profile</div> */}
             </div>
           </button>
 
@@ -615,8 +615,14 @@ const PlatformDashboard = () => {
               </div>
 
               {/* Notifications */}
-              <div className="relative">
+              <div className="relative rounded-full hover:bg-gray-500">
                 <NotificationsPanel />
+              </div>
+              <div
+                className="h-8 w-8 rounded-full bg-gray-600 flex items-center justify-center hover:bg-gray-500 hover:text-white transition duration-200"
+                onClick={() => navigate("/dashboard/usersettings")}
+              >
+                <User size={16} />
               </div>
             </div>
           </div>

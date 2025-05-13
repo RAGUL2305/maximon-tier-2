@@ -119,12 +119,12 @@ const CreateEditDraftPage = () => {
             Create New Draft
           </h1>
           <div className="space-x-2">
-            <button
+            {/* <button
               onClick={() => setShowMemoryDrawer(!showMemoryDrawer)}
               className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
             >
               <BookOpen className="w-4 h-4 inline-block mr-1" /> Memory Drawer
-            </button>
+            </button> */}
             <button
               onClick={() => setShowVersionHistory(!showVersionHistory)}
               className="px-3 py-2 text-sm bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"

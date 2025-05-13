@@ -64,6 +64,7 @@ import RolePermissionSystem from "../admin-tools/RolePermissions";
 import TrustScoreOverlay from "../admin-tools/TrustScoreOverlay";
 import VersionHistoryAuditLogs from "../admin-tools/VersionHistory";
 import TriggerConfigurator from "../signal-flow/TriggerConfig";
+import SettingsPage from "../UserSettings";
 
 const Paths = () => {
   return (
@@ -178,13 +179,14 @@ const Paths = () => {
           {/* Admin tools */}
 
           <Route path="escalation" element={<EscalationManager />} />
-          <Route path="governance" element={< GovernanceGuardrailConfig/>} />
+          <Route path="governance" element={<GovernanceGuardrailConfig />} />
           <Route path="memorysync" element={<MemorySyncPanel />} />
           <Route path="notification" element={<NotificationsPanel />} />
-          <Route path="rolepermission" element={< RolePermissionSystem/>} />
-          <Route path="trustscoreoverlay" element={< TrustScoreOverlay/>} />  
-          <Route path="versionhistory" element={< VersionHistoryAuditLogs/>} />
-          
+          <Route path="rolepermission" element={<RolePermissionSystem />} />
+          <Route path="trustscoreoverlay" element={<TrustScoreOverlay />} />
+          <Route path="versionhistory" element={<VersionHistoryAuditLogs />} />
+
+          <Route path="usersettings" element={<SettingsPage />} />
         </Route>
       </Routes>
     </Router>

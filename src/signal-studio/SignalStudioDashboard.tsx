@@ -131,7 +131,7 @@ const SignalStudioDashboard = () => {
       </header> */}
 
       {/* Main content */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1">
         {/* Sidebar */}
 
         {/* Dashboard content */}
@@ -194,7 +194,12 @@ const SignalStudioDashboard = () => {
 
             {/* Quick Action Buttons */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <button className="bg-white border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-50">
+              <button
+                className="bg-white border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-50"
+                onClick={() => {
+                  navigate("/dashboard/studio/editor");
+                }}
+              >
                 <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mr-3">
                   <FileText size={20} />
                 </div>
@@ -204,16 +209,15 @@ const SignalStudioDashboard = () => {
                     Start a new content draft
                   </p>
                 </div>
-                <ChevronRight
-                  className="ml-auto text-gray-400"
-                  size={20}
-                  onClick={() => {
-                    navigate("/dashboard/studio/editor");
-                  }}
-                />
+                <ChevronRight className="ml-auto text-gray-400" size={20} />
               </button>
 
-              <button className="bg-white border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-50">
+              <button
+                className="bg-white border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-50"
+                onClick={() => {
+                  navigate("/dashboard/studio/visualasseststudio");
+                }}
+              >
                 <div className="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mr-3">
                   <Image size={20} />
                 </div>
@@ -225,13 +229,7 @@ const SignalStudioDashboard = () => {
                     Create brand-aligned images
                   </p>
                 </div>
-                <ChevronRight
-                  className="ml-auto text-gray-400"
-                  size={20}
-                  onClick={() => {
-                    navigate("/dashboard/studio/visualasseststudio");
-                  }}
-                />
+                <ChevronRight className="ml-auto text-gray-400" size={20} />
               </button>
 
               <button className="bg-white border border-gray-200 rounded-lg p-4 flex items-center hover:bg-gray-50">
